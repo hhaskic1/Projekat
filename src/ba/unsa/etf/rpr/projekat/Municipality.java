@@ -6,10 +6,10 @@ public class Municipality {
     private int numberOfBuildings;
     private int idMuncipality;
 
-    public Municipality(String nameOfMuncipality, int numberOfBuildings, int idMuncipality) {
+    public Municipality(int id, String nameOfMuncipality, int numberOfBuildings) {
         this.nameOfMuncipality = nameOfMuncipality;
         this.numberOfBuildings = numberOfBuildings;
-        this.idMuncipality = idMuncipality;
+        this.idMuncipality = id;
     }
 
     public String getNameOfMuncipality() {

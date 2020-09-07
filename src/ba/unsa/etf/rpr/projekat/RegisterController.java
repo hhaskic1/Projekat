@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -24,6 +23,7 @@ public class RegisterController {
     private BuildingManagementDAO dao;
 
     public RegisterController() {
+        dao=BuildingManagementDAO.getInstance();
     }
 
     public void actionLogIn(){
@@ -31,9 +31,9 @@ public class RegisterController {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader loader = null;
-            loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
-            BuildingController buildingController= new BuildingController(dao.getBuildingsByUser(fieldUsername.getText(),fieldPassword.getText()));
-            loader.setController(buildingController);
+            loader = new FXMLLoader(getClass().getResource("/fxml/MuncipalityList.fxml"));
+            MuncipalityController muncipalityController = new MuncipalityController(dao.getBuildingsByUser(fieldUsername.getText(),fieldPassword.getText()));
+            loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
