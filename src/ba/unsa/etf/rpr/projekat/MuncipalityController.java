@@ -30,6 +30,7 @@ public class MuncipalityController {
     public Button buttonDetails;
     public Button buttonExit;
 
+
     private ObservableList<Municipality> buildingObservableList;
 
     private BuildingManagementDAO dao;
@@ -38,6 +39,8 @@ public class MuncipalityController {
         buildingObservableList= FXCollections.observableArrayList(buildings);
         dao=BuildingManagementDAO.getInstance();
     }
+
+    public MuncipalityController(){}
 
     @FXML
     public void initialize(){
@@ -78,5 +81,32 @@ public class MuncipalityController {
         dao.deleteMuncipality(municipality);
         buildingObservableList.setAll(dao.getAllMuncipality());
     }
+
+    public void changeAction(){
+        Municipality municipality=TableView.getSelectionModel().getSelectedItem();
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddMuncipality.fxml"));
+            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers(),municipality);
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+
+            stage.setOnHiding(windowEvent -> {
+                buildingObservableList.setAll(dao.getAllMuncipality());
+                TableView.setItems(buildingObservableList);
+            });
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

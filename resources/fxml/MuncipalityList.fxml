@@ -24,7 +24,7 @@
       <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Button fx:id="buttonAdd" mnemonicParsing="false" onAction="#actionAddMuncipality" text="Add Muncipality" />
-            <Button fx:id="buttonChange" mnemonicParsing="false" text="Change Muncipality" />
+            <Button fx:id="buttonChange" mnemonicParsing="false" onAction="#changeAction" text="Change Muncipality" />
             <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#deleteMuncipality" text="Delete Muncipality" />
             <Button fx:id="buttonDetails" mnemonicParsing="false" text="Details" />
          </children>

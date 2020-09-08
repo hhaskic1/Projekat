@@ -31,8 +31,8 @@ public class RegisterController {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader loader = null;
-            loader = new FXMLLoader(getClass().getResource("/fxml/MuncipalityList.fxml"));
-            MuncipalityController muncipalityController = new MuncipalityController(dao.getBuildingsByUser(fieldUsername.getText(),fieldPassword.getText()));
+            loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
+            MainWindowController muncipalityController = new MainWindowController();
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

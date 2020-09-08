@@ -10,8 +10,8 @@ public class BuildingManagementDAO {
     private Connection conn=null;
 
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
-    private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality;
-
+    private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
+    private PreparedStatement updateMuncipality,getMuncipalityByName;
 
     private BuildingManagementDAO(){
         try{
@@ -28,6 +28,12 @@ public class BuildingManagementDAO {
             addMuncipality=conn.prepareStatement("insert into Municipality values(?,?,?)");
             getNextMuncipalityID=conn.prepareStatement("select Max (id)+1 from Municipality ");
             deleteMuncipality=conn.prepareStatement("DELETE from Municipality where Municipality.id=?");
+            getUserFromMuncipality=conn.prepareStatement("select idUser from User_Muncipality where idMuncipality=?");
+            getUserById=conn.prepareStatement("select * from User where id=?");
+            addMuncipalityAndUser=conn.prepareStatement("INSERT into User_Muncipality values(?,?)");
+            updateMuncipality=conn.prepareStatement("UPDATE Municipality set name=? where id=?");
+            getMuncipalityByName=conn.prepareStatement("SELECT id from Municipality where name=? ");
+
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -144,6 +150,65 @@ public class BuildingManagementDAO {
             e.printStackTrace();
         }
     }
+
+    public User getUserFromMuncipality(Municipality municipality){
+        try{
+            getUserFromMuncipality.setInt(1,municipality.getIdMuncipality());
+            ResultSet rs2=getUserFromMuncipality.executeQuery();
+            int id=rs2.getInt(1);
+            getUserById.setInt(1,id);
+            ResultSet rs=getUserById.executeQuery();
+
+
+
+                User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+               return u;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void AddMuncipality(String name,User user){
+        try{
+            ResultSet rs=getNextMuncipalityID.executeQuery();
+
+            int id=rs.getInt(1);
+            addMuncipality.setInt(1,id);
+            addMuncipality.setString(2,name);
+            addMuncipality.setInt(3,0);
+            addMuncipality.executeUpdate();
+
+            addMuncipalityAndUser.setInt(1,getUserIdByParameters(user.getUsername(),user.getPassword()));
+
+            addMuncipalityAndUser.setInt(2,id);
+            addMuncipalityAndUser.executeUpdate();
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+/*
+    public void updateMuncipality(String id,User user){
+
+        try{
+            getMuncipalityByName.setString(1,id);
+            ResultSet rs=getMuncipalityByName.executeQuery();
+            int identity=rs.getInt(1);
+            updateMuncipality.setString(1,id);
+            updateMuncipality.setInt(2,identity);
+            updateMuncipality.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+
+        }
+
+
+    }*/
+
 
 
 }
