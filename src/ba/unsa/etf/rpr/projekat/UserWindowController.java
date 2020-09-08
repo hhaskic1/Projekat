@@ -108,4 +108,9 @@ public class UserWindowController {
         userObservableList.setAll(dao.getAllUsers());
     }
 
+    public void exitAction(){
+        Stage stage= (Stage) buttonExit.getScene().getWindow();
+        stage.close();
+    }
+
 }

@@ -11,7 +11,7 @@ public class BuildingManagementDAO {
 
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
-    private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser;
+    private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
 
     private BuildingManagementDAO(){
         try{
@@ -38,6 +38,7 @@ public class BuildingManagementDAO {
             isThereUser=conn.prepareStatement("SELECT * from User where password=? and username=?");
             updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=? where id=?");
             deleteUser=conn.prepareStatement("DELETE from User where id=?");
+            getAllBuildings=conn.prepareStatement("select * from Building");
 
 
         }catch(SQLException e){
@@ -286,6 +287,26 @@ public class BuildingManagementDAO {
             deleteUser.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Building> getAllBuildings(){
+        try {
+            ResultSet rs=getAllBuildings.executeQuery();
+            ArrayList<Building> buildings = new ArrayList<>();
+            while(rs.next()){
+                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+                if(rs.getInt(4) == 1)b.setType(BuildingType.NewBuilding);
+                else if(rs.getInt(4) == 2)b.setType(BuildingType.OldBuilding);
+                else b.setType(BuildingType.Mall);
+                buildings.add(b);
+            }
+            return buildings;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

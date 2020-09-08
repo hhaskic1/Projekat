@@ -6,6 +6,16 @@ public class Building {
     private String adress;
     private String numberOfFlats;
 
+    private BuildingType type;
+
+    public BuildingType getType() {
+        return type;
+    }
+
+    public void setType(BuildingType type) {
+        this.type = type;
+    }
+
     public Building(int id, String adress, String numberOfFlats) {
         this.id = id;
         this.adress = adress;
@@ -35,4 +45,15 @@ public class Building {
     public void setNumberOfFlats(String numberOfFlats) {
         this.numberOfFlats = numberOfFlats;
     }
+
+    public String getTypeByString(){
+        if(type.getLevel()==1){
+            return "NewBuilding";
+        }else if(type.getLevel()==2){
+            return "OldBuilding";
+        }else {
+            return "Mall";
+        }
+    }
+
 }

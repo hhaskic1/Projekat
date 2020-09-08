@@ -63,4 +63,24 @@ public class MainWindowController {
         }
     }
 
+    public void buildingAction(){
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
+            BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings());
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }
