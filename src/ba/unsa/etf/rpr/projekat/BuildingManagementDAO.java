@@ -11,7 +11,7 @@ public class BuildingManagementDAO {
 
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
-    private PreparedStatement updateMuncipality,getMuncipalityByName;
+    private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser;
 
     private BuildingManagementDAO(){
         try{
@@ -33,6 +33,11 @@ public class BuildingManagementDAO {
             addMuncipalityAndUser=conn.prepareStatement("INSERT into User_Muncipality values(?,?)");
             updateMuncipality=conn.prepareStatement("UPDATE Municipality set name=? where id=?");
             getMuncipalityByName=conn.prepareStatement("SELECT id from Municipality where name=? ");
+            addUser=conn.prepareStatement("INSERT into User values (?,?,?,?,?,?,?,?)");
+            getNextUser=conn.prepareStatement("select Max (id)+1 from User");
+            isThereUser=conn.prepareStatement("SELECT * from User where password=? and username=?");
+            updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=? where id=?");
+            deleteUser=conn.prepareStatement("DELETE from User where id=?");
 
 
         }catch(SQLException e){
@@ -113,6 +118,7 @@ public class BuildingManagementDAO {
             ResultSet rs=getAllUsers.executeQuery();
             while(rs.next()){
                 User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                u.setId(rs.getInt(1));
                 users.add(u);
             }
         return users;
@@ -209,6 +215,78 @@ public class BuildingManagementDAO {
 
     }*/
 
+    public void addUser(User user){
 
+        try{
+            ResultSet rs=getNextUser.executeQuery();
+            int id=rs.getInt(1);
+
+            addUser.setInt(1,id);
+            addUser.setString(2,user.getFirst_name());
+            addUser.setString(3,user.getLast_name());
+            addUser.setString(4,user.getPhone_number());
+            addUser.setString(5,user.getEmail());
+            addUser.setString(6,user.getAdress());
+            addUser.setString(7,user.getUsername());
+            addUser.setString(8,user.getPassword());
+
+            addUser.executeUpdate();
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public Boolean isThereUser(String username,String password){
+        try{
+
+            isThereUser.setString(1,password);
+            isThereUser.setString(2,username);
+
+            ResultSet rs=isThereUser.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public void updateUser(User user){
+
+        try {
+            updateUser.setString(1,user.getFirst_name());
+            updateUser.setString(2,user.getLast_name());
+            updateUser.setString(3,user.getPhone_number());
+            updateUser.setString(4,user.getEmail());
+            updateUser.setString(5,user.getAdress());
+            updateUser.setString(6,user.getUsername());
+            updateUser.setString(7,user.getPassword());
+            updateUser.setInt(8,user.getId());
+
+            updateUser.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteUser(User user){
+        try{
+            deleteUser.setInt(1,user.getId());
+            deleteUser.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
 }

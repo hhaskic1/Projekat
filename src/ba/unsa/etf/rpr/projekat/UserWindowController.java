@@ -78,5 +78,34 @@ public class UserWindowController {
     }
 
 
+    public void changeUser(){
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddUsers.fxml"));
+            AddUserController muncipalityController = new AddUserController(tableView.getSelectionModel().getSelectedItem());
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+
+            stage.setOnHiding(windowEvent -> {
+                userObservableList.setAll(dao.getAllUsers());
+                tableView.setItems(userObservableList);
+            });
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAction(){
+        User user=tableView.getSelectionModel().getSelectedItem();
+        dao.deleteUser(user);
+        userObservableList.setAll(dao.getAllUsers());
+    }
 
 }

@@ -20,6 +20,8 @@ public class RegisterController {
     public Button buttonLogIn;
     public Button buttonExit;
 
+
+
     private BuildingManagementDAO dao;
 
     public RegisterController() {
@@ -27,20 +29,22 @@ public class RegisterController {
     }
 
     public void actionLogIn(){
-        try {
-            Stage stage = new Stage();
-            Parent root;
-            FXMLLoader loader = null;
-            loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
-            MainWindowController muncipalityController = new MainWindowController();
-            loader.setController(muncipalityController);
-            root = loader.load();
-            stage.setTitle("");
-            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            //stage.setResizable(false);
-            stage.show();
-        }catch (IOException e){
-            e.printStackTrace();
+        if(dao.isThereUser(fieldUsername.getText(),fieldPassword.getText())) {
+            try {
+                Stage stage = new Stage();
+                Parent root;
+                FXMLLoader loader = null;
+                loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
+                MainWindowController muncipalityController = new MainWindowController();
+                loader.setController(muncipalityController);
+                root = loader.load();
+                stage.setTitle("");
+                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                //stage.setResizable(false);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
