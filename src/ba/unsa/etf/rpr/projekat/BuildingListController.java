@@ -29,7 +29,7 @@ public class BuildingListController {
     public TableView<Building> buidlingList;
     public TableColumn<Building,Integer> id;
     public TableColumn<Building,String> adress;
-    public TableColumn<Building,String> flats;
+    public TableColumn<Building,Integer> flats;
     public TableColumn<Building,String> type;
 
     private ObservableList<Building> buildingObservableList;
@@ -37,6 +37,7 @@ public class BuildingListController {
     private BuildingManagementDAO dao;
 
     public BuildingListController(ArrayList<Building> buildings) {
+        dao = BuildingManagementDAO.getInstance();
         buildingObservableList= FXCollections.observableArrayList(buildings);
     }
 
@@ -55,14 +56,19 @@ public class BuildingListController {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader loader = null;
-            loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
-            BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings());
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddBuilding.fxml"));
+            AddBuildingController muncipalityController = new AddBuildingController();
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
+
+            stage.setOnHiding(windowEvent -> {
+                buildingObservableList.setAll(dao.getAllBuildings());
+                buidlingList.setItems(buildingObservableList);
+            });
 
 
         }catch (IOException e){

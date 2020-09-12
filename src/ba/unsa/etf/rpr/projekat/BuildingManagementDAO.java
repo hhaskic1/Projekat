@@ -12,6 +12,7 @@ public class BuildingManagementDAO {
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
+    private PreparedStatement addBuilding,getNextBuilding;
 
     private BuildingManagementDAO(){
         try{
@@ -39,6 +40,8 @@ public class BuildingManagementDAO {
             updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=? where id=?");
             deleteUser=conn.prepareStatement("DELETE from User where id=?");
             getAllBuildings=conn.prepareStatement("select * from Building");
+            addBuilding=conn.prepareStatement("INSERT into Building values(?,?,?,?,?)");
+            getNextBuilding=conn.prepareStatement("select Max(id)+1 from Building");
 
 
         }catch(SQLException e){
@@ -309,5 +312,28 @@ public class BuildingManagementDAO {
             return null;
         }
     }
+
+    public void addBuilding(Building building){
+
+        try {
+            ResultSet rs=getNextBuilding.executeQuery();
+            int id=rs.getInt(1);
+            if(id==0) id++;
+
+            addBuilding.setInt(1,id);
+            addBuilding.setString(2,building.getAdress());
+            addBuilding.setString(3,building.getNumberOfFlats());
+            addBuilding.setInt(4,building.getType().getLevel());
+            addBuilding.setInt(5,building.getGarage());
+
+            addBuilding.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

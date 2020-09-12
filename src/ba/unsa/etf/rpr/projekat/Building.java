@@ -5,6 +5,18 @@ public class Building {
     private int id;
     private String adress;
     private String numberOfFlats;
+    private int garage;
+
+    public int getGarage() {
+        return garage;
+    }
+
+    public void setGarage(int garage) {
+        this.garage = garage;
+    }
+
+
+
 
     private BuildingType type;
 
