@@ -12,7 +12,7 @@ public class BuildingManagementDAO {
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
-    private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding;
+    private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
 
     private BuildingManagementDAO(){
         try{
@@ -45,6 +45,7 @@ public class BuildingManagementDAO {
             updateUserMuncipality= conn.prepareStatement("update User_Muncipality set idUser = ? where idMuncipality = ?");
             deleteUserMuncipality =conn.prepareStatement("delete from User_Muncipality where idMuncipality = ?");
             deleteBuilding=conn.prepareStatement("delete from Building where id=?");
+            updateBuilding=conn.prepareStatement("UPDATE Building set adress=?,numberOfFlats=?,type=?,garage=? where id=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -355,6 +356,33 @@ public class BuildingManagementDAO {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public void updateBuilding(Building building){
+        try {
+            updateBuilding.setString(1,building.getAdress());
+            updateBuilding.setString(2,building.getNumberOfFlats());
+
+                if(building.getType()==BuildingType.Mall){
+                    updateBuilding.setInt(3,3);
+
+                }else if(building.getType()==BuildingType.NewBuilding){
+                    updateBuilding.setInt(3,1);
+
+                }else {
+                    updateBuilding.setInt(3,2);
+
+                }
+            updateBuilding.setInt(4,building.getGarage());
+            updateBuilding.setInt(5,building.getId());
+
+            updateBuilding.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

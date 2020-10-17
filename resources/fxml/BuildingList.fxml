@@ -25,7 +25,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Button fx:id="addBuilding" mnemonicParsing="false" onAction="#addAction" text="Add Building" />
-            <Button fx:id="changeBuilding" mnemonicParsing="false" text="Change Building" />
+            <Button fx:id="changeBuilding" mnemonicParsing="false" onAction="#changeBuilding" text="Change Building" />
             <Button fx:id="deleteBuilding" mnemonicParsing="false" onAction="#deleteBuilding" text="Delete Building" />
             <Button mnemonicParsing="false" text="Details" />
          </children>
