@@ -76,6 +76,11 @@ public class BuildingListController {
         }
     }
 
+    public void deleteBuilding (){
+        Building building=buidlingList.getSelectionModel().getSelectedItem();
+        dao.deleteBuilding(building);
+        buildingObservableList.setAll(dao.getAllBuildings());
+    }
 
 
 

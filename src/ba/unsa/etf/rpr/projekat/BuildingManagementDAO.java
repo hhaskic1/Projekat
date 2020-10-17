@@ -12,7 +12,7 @@ public class BuildingManagementDAO {
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
-    private PreparedStatement addBuilding,getNextBuilding;
+    private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding;
 
     private BuildingManagementDAO(){
         try{
@@ -42,7 +42,9 @@ public class BuildingManagementDAO {
             getAllBuildings=conn.prepareStatement("select * from Building");
             addBuilding=conn.prepareStatement("INSERT into Building values(?,?,?,?,?)");
             getNextBuilding=conn.prepareStatement("select Max(id)+1 from Building");
-
+            updateUserMuncipality= conn.prepareStatement("update User_Muncipality set idUser = ? where idMuncipality = ?");
+            deleteUserMuncipality =conn.prepareStatement("delete from User_Muncipality where idMuncipality = ?");
+            deleteBuilding=conn.prepareStatement("delete from Building where id=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -154,8 +156,13 @@ public class BuildingManagementDAO {
 
     public void deleteMuncipality(Municipality municipality){
         try{
+            deleteUserMuncipality.setInt(1,municipality.getIdMuncipality());
+            deleteUserMuncipality.executeUpdate();
+
             deleteMuncipality.setInt(1,municipality.getIdMuncipality());
             deleteMuncipality.executeUpdate();
+
+
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -200,16 +207,23 @@ public class BuildingManagementDAO {
             e.printStackTrace();
         }
     }
-/*
-    public void updateMuncipality(String id,User user){
+
+    public void updateMuncipality(Integer id, String name, User user){
 
         try{
-            getMuncipalityByName.setString(1,id);
+            /*getMuncipalityByName.setString(1,id);
             ResultSet rs=getMuncipalityByName.executeQuery();
-            int identity=rs.getInt(1);
-            updateMuncipality.setString(1,id);
-            updateMuncipality.setInt(2,identity);
+            int identity=rs.getInt(1);*/
+            //modifikovanje samo munci
+            updateMuncipality.setString(1,name);
+            updateMuncipality.setInt(2,id);
             updateMuncipality.executeUpdate();
+
+
+            //modifikovanje user-munci
+            updateUserMuncipality.setInt(1,user.getId());
+            updateUserMuncipality.setInt(2,id);
+            updateUserMuncipality.executeUpdate();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -217,7 +231,7 @@ public class BuildingManagementDAO {
         }
 
 
-    }*/
+    }
 
     public void addUser(User user){
 
@@ -333,6 +347,16 @@ public class BuildingManagementDAO {
             e.printStackTrace();
         }
     }
+
+    public void deleteBuilding(Building building){
+        try{
+            deleteBuilding.setInt(1,building.getId());
+            deleteBuilding.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 

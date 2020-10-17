@@ -18,9 +18,10 @@
       <Label text="Username" GridPane.rowIndex="1" />
       <Label text="Password" GridPane.rowIndex="2" />
       <TextField fx:id="fieldUsername" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="fieldPassword" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <PasswordField fx:id="fieldPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button fx:id="buttonExit" minWidth="100.0" mnemonicParsing="false" text="Exit" GridPane.rowIndex="3" />
       <Button fx:id="buttonLogIn" minWidth="100.0" mnemonicParsing="false" onAction="#actionLogIn" text="Log In" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label text="Please enter your username and password :" />
+
    </children>
 </GridPane>

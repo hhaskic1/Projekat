@@ -26,7 +26,7 @@
          <children>
             <Button fx:id="addBuilding" mnemonicParsing="false" onAction="#addAction" text="Add Building" />
             <Button fx:id="changeBuilding" mnemonicParsing="false" text="Change Building" />
-            <Button fx:id="deleteBuilding" mnemonicParsing="false" text="Delete Building" />
+            <Button fx:id="deleteBuilding" mnemonicParsing="false" onAction="#deleteBuilding" text="Delete Building" />
             <Button mnemonicParsing="false" text="Details" />
          </children>
       </VBox>

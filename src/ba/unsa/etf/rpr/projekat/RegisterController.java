@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -16,7 +17,7 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 public class RegisterController {
 
     public TextField fieldUsername;
-    public TextField fieldPassword;
+    public PasswordField fieldPassword;
     public Button buttonLogIn;
     public Button buttonExit;
 

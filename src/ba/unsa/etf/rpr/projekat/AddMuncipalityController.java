@@ -20,6 +20,7 @@ public class AddMuncipalityController {
     private ObservableList<User> observableList;
     private Municipality municipality=null;
 
+
     public AddMuncipalityController(ArrayList<User>users) {
         dao=BuildingManagementDAO.getInstance();
         observableList= FXCollections.observableArrayList(users);
@@ -35,7 +36,7 @@ public class AddMuncipalityController {
         if(municipality==null)
         dao.AddMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem());
         else{
-            //dao.updateMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem(), );
+            dao.updateMuncipality(municipality.getIdMuncipality(),nameID.getText(),managerID.getSelectionModel().getSelectedItem());
         }
         Stage stage=(Stage) saveBack.getScene().getWindow();
         stage.close();

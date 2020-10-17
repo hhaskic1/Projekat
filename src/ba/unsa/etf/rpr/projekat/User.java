@@ -7,6 +7,7 @@ public class User {
     private String phone_number;
     private String email;
     private String adress;
+    private int id;
 
     public int getId() {
         return id;
@@ -16,7 +17,7 @@ public class User {
         this.id = id;
     }
 
-    private int id;
+
 
     private String username;
     private String password;
