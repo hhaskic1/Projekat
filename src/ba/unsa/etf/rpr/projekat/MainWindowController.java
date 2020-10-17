@@ -17,6 +17,8 @@ public class MainWindowController {
     public Button userButton;
     public Button MuncipalityButton;
 
+    public Button idJobs;
+
     private BuildingManagementDAO dao;
 
     public MainWindowController() {
@@ -70,6 +72,26 @@ public class MainWindowController {
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
             BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings());
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void idJobs(){
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/Jobs.fxml"));
+            JobsController muncipalityController = new JobsController();
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

@@ -1,11 +1,14 @@
 package ba.unsa.etf.rpr.projekat;
 
+import java.util.ArrayList;
+
 public class Building {
 
     private int id;
     private String adress;
     private String numberOfFlats;
     private int garage;
+    private ArrayList<Jobs> jobs = new ArrayList<>();
 
     public int getGarage() {
         return garage;
@@ -16,7 +19,17 @@ public class Building {
     }
 
 
+    public ArrayList<Jobs> getJobs() {
+        return jobs;
+    }
 
+    public void setJobs(ArrayList<Jobs> jobs) {
+        this.jobs = jobs;
+    }
+
+    public void addJob(Jobs job){
+        jobs.add(job);
+    }
 
     private BuildingType type;
 

@@ -35,11 +35,11 @@ public class AddBuildingController {
     public void initialize(){
         dao=BuildingManagementDAO.getInstance();
 
-        if(buidling==null) {
+        newbuilding.setToggleGroup(toggleGroup);
+        oldBuilding.setToggleGroup(toggleGroup);
+        mall.setToggleGroup(toggleGroup);
 
-            newbuilding.setToggleGroup(toggleGroup);
-            oldBuilding.setToggleGroup(toggleGroup);
-            mall.setToggleGroup(toggleGroup);
+        if(buidling==null) {
 
             newbuilding.setSelected(false);
             oldBuilding.setSelected(false);
@@ -101,7 +101,7 @@ public class AddBuildingController {
             dao.addBuilding(buidling);
         else
             dao.updateBuilding(buidling);
-        
+
         Stage stage=(Stage) buttonSave.getScene().getWindow();
         stage.close();
 

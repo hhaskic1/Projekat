@@ -13,6 +13,7 @@ public class BuildingManagementDAO {
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
+    private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob;
 
     private BuildingManagementDAO(){
         try{
@@ -46,6 +47,10 @@ public class BuildingManagementDAO {
             deleteUserMuncipality =conn.prepareStatement("delete from User_Muncipality where idMuncipality = ?");
             deleteBuilding=conn.prepareStatement("delete from Building where id=?");
             updateBuilding=conn.prepareStatement("UPDATE Building set adress=?,numberOfFlats=?,type=?,garage=? where id=?");
+            getBuildingByAdress=conn.prepareStatement("SELECT * from Building where adress=?");
+            getNextJobId=conn.prepareStatement("select Max (id)+1 from Jobs");
+            addJob=conn.prepareStatement("insert into Jobs values (?,?,?,?,?)");
+            addJobsToBuilding=conn.prepareStatement("insert into Building_Jobs values (?,?)");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -385,7 +390,61 @@ public class BuildingManagementDAO {
 
     }
 
+    public Building getBuildingByAdress(String adress){
+        try{
+            getBuildingByAdress.setString(1,adress);
+            ResultSet rs= getBuildingByAdress.executeQuery();
+            Building building=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+            building.setGarage(rs.getInt(5));
+            if(rs.getInt(4)==1){
+                building.setType(BuildingType.NewBuilding);
+            }else if(rs.getInt(4)==2) {
+                building.setType(BuildingType.OldBuilding);
+            }else {
+                building.setType(BuildingType.Mall);
+            }
+            return building;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
 
 
+    public int getNextJobId(){
+
+        try{
+            ResultSet rs=getNextJobId.executeQuery();
+            int id=rs.getInt(1);
+            if(id==0) id++;
+            return id;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+
+
+    }
+
+    public void addJobsToBuilding(Jobs jobs,Building building) {
+        try {
+
+            addJob.setInt(1, jobs.getId());
+            addJob.setString(2,jobs.getName());
+            addJob.setString(3, String.valueOf(jobs.getBeginingDate()));
+            addJob.setString(4, String.valueOf(jobs.getEndDate()));
+            addJob.setString(5,jobs.getContractor());
+            addJob.executeUpdate();
+
+            addJobsToBuilding.setInt(1,building.getId());
+            addJobsToBuilding.setInt(2,jobs.getId());
+            addJobsToBuilding.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
 }
