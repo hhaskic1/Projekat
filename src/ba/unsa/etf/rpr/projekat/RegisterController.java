@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ public class RegisterController {
     public PasswordField fieldPassword;
     public Button buttonLogIn;
     public Button buttonExit;
+    public Label labela=new Label();
 
 
 
@@ -46,12 +48,37 @@ public class RegisterController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else {
+            labela.setVisible(true);
+            fieldUsername.getStyleClass().add("poljeNijeIspravno");
+            fieldPassword.getStyleClass().add("poljeNijeIspravno");
+
+            fieldUsername.textProperty().addListener((o,oldvalue,newvalue)->{
+
+                if(!oldvalue.contentEquals(newvalue)) {
+                    fieldUsername.getStyleClass().removeAll("poljeNijeIspravno");
+                    fieldPassword.getStyleClass().removeAll("poljeNijeIspravno");
+                    labela.setVisible(false);
+                }
+            });
+
+            fieldPassword.textProperty().addListener((o,oldvalue,newvalue)->{
+
+                if(!oldvalue.contentEquals(newvalue)) {
+                    fieldUsername.getStyleClass().removeAll("poljeNijeIspravno");
+                    fieldPassword.getStyleClass().removeAll("poljeNijeIspravno");
+                    labela.setVisible(false);
+                }
+            });
+
         }
     }
 
     @FXML
     public void initialize(){
         dao=BuildingManagementDAO.getInstance();
+        labela.setVisible(false);
+
     }
 
 

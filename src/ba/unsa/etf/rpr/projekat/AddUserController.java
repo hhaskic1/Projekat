@@ -16,6 +16,7 @@ public class AddUserController {
     public TextField adress;
     public TextField username;
     public TextField password;
+    public TextField repeatPassword;
 
     public Button save;
     public Button exit;
@@ -43,11 +44,37 @@ public class AddUserController {
             adress.setText(user.getAdress());
             username.setText(user.getUsername());
             password.setText(user.getPassword());
+            repeatPassword.setText(user.getPassword());
         }
+
+        repeatPassword.textProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!oldvalue.contentEquals(newvalue)) {
+                password.getStyleClass().removeAll("poljeNijeIspravno");
+                repeatPassword.getStyleClass().removeAll("poljeNijeIspravno");
+
+            }
+        });
+
+        password.textProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!oldvalue.contentEquals(newvalue)) {
+                password.getStyleClass().removeAll("poljeNijeIspravno");
+                repeatPassword.getStyleClass().removeAll("poljeNijeIspravno");
+
+            }
+        });
 
     }
 
     public void saveAction(){
+
+        if(!password.getText().equals(repeatPassword.getText())){
+            password.getStyleClass().add("poljeNijeIspravno");
+            repeatPassword.getStyleClass().add("poljeNijeIspravno");
+            return;
+        }
+
         if(user==null) {
             user = new User(firstname.getText(), lastname.getText(), phone.getText(), email.getText(), adress.getText(), username.getText(), password.getText());
             dao.addUser(user);

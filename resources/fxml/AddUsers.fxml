@@ -17,6 +17,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="First Name:" />
@@ -24,8 +25,8 @@
       <Label text="Phone:" GridPane.rowIndex="2" />
       <Label text="E-mail:" GridPane.rowIndex="3" />
       <Label text="Adress:" GridPane.rowIndex="4" />
-      <Button fx:id="exit" mnemonicParsing="false" onAction="#exitAction" text="EXIT" GridPane.rowIndex="7" />
-      <Button fx:id="save" mnemonicParsing="false" onAction="#saveAction" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Button fx:id="exit" mnemonicParsing="false" onAction="#exitAction" text="EXIT" GridPane.rowIndex="8" />
+      <Button fx:id="save" mnemonicParsing="false" onAction="#saveAction" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <TextField fx:id="firstname" GridPane.columnIndex="1" />
       <TextField fx:id="lastname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="phone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -34,6 +35,8 @@
       <Label text="Username:" GridPane.rowIndex="5" />
       <Label text="Password:" GridPane.rowIndex="6" />
       <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <TextField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextField fx:id="password" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="Repeat Password:" GridPane.rowIndex="7" />
+      <TextField fx:id="repeatPassword" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="7" />
    </children>
 </GridPane>
