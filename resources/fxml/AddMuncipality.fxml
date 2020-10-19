@@ -11,14 +11,16 @@
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Name of Muncipality" />
       <Label text="Manger of Muncipality" GridPane.rowIndex="1" />
-      <TextField fx:id="nameID" GridPane.columnIndex="1" />
+      <TextField fx:id="nameID" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" />
       <ChoiceBox fx:id="managerID" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="saveBack" mnemonicParsing="false" onAction="#actionSave" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" text="Exit" GridPane.rowIndex="2" />
+      <Button fx:id="saveBack" mnemonicParsing="false" onAction="#actionSave" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Button mnemonicParsing="false" text="Exit" GridPane.rowIndex="3" />
+      <Label fx:id="labela" text="Please Choose Manager of Muncipality !" textFill="#f80101" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>

@@ -13,7 +13,8 @@ public class BuildingManagementDAO {
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
-    private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob;
+    private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
+    private PreparedStatement isThereMuncipality;
 
     private BuildingManagementDAO(){
         try{
@@ -37,7 +38,7 @@ public class BuildingManagementDAO {
             getMuncipalityByName=conn.prepareStatement("SELECT id from Municipality where name=? ");
             addUser=conn.prepareStatement("INSERT into User values (?,?,?,?,?,?,?,?)");
             getNextUser=conn.prepareStatement("select Max (id)+1 from User");
-            isThereUser=conn.prepareStatement("SELECT * from User where password=? and username=?");
+            isThereUser=conn.prepareStatement("SELECT * from User where username=?");
             updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=? where id=?");
             deleteUser=conn.prepareStatement("DELETE from User where id=?");
             getAllBuildings=conn.prepareStatement("select * from Building");
@@ -51,6 +52,9 @@ public class BuildingManagementDAO {
             getNextJobId=conn.prepareStatement("select Max (id)+1 from Jobs");
             addJob=conn.prepareStatement("insert into Jobs values (?,?,?,?,?)");
             addJobsToBuilding=conn.prepareStatement("insert into Building_Jobs values (?,?)");
+            isThereUserByParametersExceptUser=conn.prepareStatement("SELECT * from User where username=? and username!=?");
+            checkUser=conn.prepareStatement("select * from User where password=? and username=?");
+            isThereMuncipality=conn.prepareStatement("select * from Municipality where name=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -264,13 +268,73 @@ public class BuildingManagementDAO {
 
     }
 
+
+    public Boolean isThereMuncipality(String name){
+        try{
+            isThereMuncipality.setString(1,name);
+
+            ResultSet rs=isThereMuncipality.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
     public Boolean isThereUser(String username,String password){
         try{
 
-            isThereUser.setString(1,password);
-            isThereUser.setString(2,username);
+           // isThereUser.setString(1,password);
+            isThereUser.setString(1,username);
 
             ResultSet rs=isThereUser.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+    public Boolean checkUser(String username,String password){
+        try{
+
+            checkUser.setString(1,password);
+            checkUser.setString(2,username);
+
+            ResultSet rs=checkUser.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public Boolean isThereUserByParametersExceptUser(String username,String password,String  oldUsername,String oldPassword){
+        try{
+
+            //isThereUserByParametersExceptUser.setString(1,password);
+            isThereUserByParametersExceptUser.setString(1,username);
+            //isThereUserByParametersExceptUser.setString(3,oldPassword);
+            isThereUserByParametersExceptUser.setString(2,oldUsername);
+
+
+            ResultSet rs=isThereUserByParametersExceptUser.executeQuery();
 
             if(rs.next()) return true;
             return false;

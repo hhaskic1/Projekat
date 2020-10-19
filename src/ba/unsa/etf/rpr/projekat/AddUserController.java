@@ -52,6 +52,7 @@ public class AddUserController {
             if(!oldvalue.contentEquals(newvalue)) {
                 password.getStyleClass().removeAll("poljeNijeIspravno");
                 repeatPassword.getStyleClass().removeAll("poljeNijeIspravno");
+                username.getStyleClass().removeAll("poljeNijeIspravno");
 
             }
         });
@@ -61,6 +62,18 @@ public class AddUserController {
             if(!oldvalue.contentEquals(newvalue)) {
                 password.getStyleClass().removeAll("poljeNijeIspravno");
                 repeatPassword.getStyleClass().removeAll("poljeNijeIspravno");
+                username.getStyleClass().removeAll("poljeNijeIspravno");
+
+            }
+        });
+
+
+        username.textProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!oldvalue.contentEquals(newvalue)) {
+                password.getStyleClass().removeAll("poljeNijeIspravno");
+                repeatPassword.getStyleClass().removeAll("poljeNijeIspravno");
+                username.getStyleClass().removeAll("poljeNijeIspravno");
 
             }
         });
@@ -69,11 +82,29 @@ public class AddUserController {
 
     public void saveAction(){
 
+        if(user==null) {
+            if (dao.isThereUser(username.getText(), password.getText())) {
+                username.getStyleClass().add("poljeNijeIspravno");
+                password.getStyleClass().add("poljeNijeIspravno");
+                repeatPassword.getStyleClass().add("poljeNijeIspravno");
+                return;
+            }
+
+        }else{
+            if (dao.isThereUserByParametersExceptUser(username.getText(), password.getText(),user.getUsername(),user.getPassword())) {
+                username.getStyleClass().add("poljeNijeIspravno");
+                password.getStyleClass().add("poljeNijeIspravno");
+                repeatPassword.getStyleClass().add("poljeNijeIspravno");
+                return;
+            }
+        }
         if(!password.getText().equals(repeatPassword.getText())){
             password.getStyleClass().add("poljeNijeIspravno");
             repeatPassword.getStyleClass().add("poljeNijeIspravno");
             return;
         }
+
+
 
         if(user==null) {
             user = new User(firstname.getText(), lastname.getText(), phone.getText(), email.getText(), adress.getText(), username.getText(), password.getText());

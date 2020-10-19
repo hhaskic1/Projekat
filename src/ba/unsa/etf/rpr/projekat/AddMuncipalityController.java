@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -15,6 +16,7 @@ public class AddMuncipalityController {
     public TextField nameID;
     public ChoiceBox<User> managerID=new ChoiceBox<>();
     public Button saveBack;
+    public Label labela;
 
     private BuildingManagementDAO dao;
     private ObservableList<User> observableList;
@@ -33,6 +35,15 @@ public class AddMuncipalityController {
     }
 
     public void actionSave(){
+        if(dao.isThereMuncipality(nameID.getText())){
+            nameID.getStyleClass().add("poljeNijeIspravno");
+            return;
+        }
+        if(managerID.getSelectionModel().getSelectedItem()==null){
+            labela.setVisible(true);
+            return;
+        }
+
         if(municipality==null)
         dao.AddMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem());
         else{
@@ -44,12 +55,28 @@ public class AddMuncipalityController {
 
     @FXML
     public void initialize() {
+        labela.setVisible(false);
         dao = BuildingManagementDAO.getInstance();
         managerID.setItems(observableList);
         if(municipality!=null){
             nameID.setText(municipality.getNameOfMuncipality());
             managerID.getSelectionModel().select(dao.getUserFromMuncipality(municipality));
         }
+
+        nameID.textProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!oldvalue.contentEquals(newvalue)) {
+                nameID.getStyleClass().removeAll("poljeNijeIspravno");
+            }
+        });
+
+
+        managerID.valueProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!newvalue.equals(oldvalue)) {
+                labela.setVisible(false);
+            }
+        });
 
     }
 

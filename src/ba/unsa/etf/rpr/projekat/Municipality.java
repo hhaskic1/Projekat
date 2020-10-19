@@ -35,4 +35,12 @@ public class Municipality {
     public void setIdMuncipality(int idMuncipality) {
         this.idMuncipality = idMuncipality;
     }
+
+
+    public boolean equals(Municipality obj) {
+        if(obj==null && this!=null) return true;
+        if(this.getNameOfMuncipality()==obj.getNameOfMuncipality())
+        return true;
+        else return false;
+    }
 }

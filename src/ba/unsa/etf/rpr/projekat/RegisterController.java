@@ -32,7 +32,7 @@ public class RegisterController {
     }
 
     public void actionLogIn(){
-        if(dao.isThereUser(fieldUsername.getText(),fieldPassword.getText())) {
+        if(dao.checkUser(fieldUsername.getText(),fieldPassword.getText())) {
             try {
                 Stage stage = new Stage();
                 Parent root;
