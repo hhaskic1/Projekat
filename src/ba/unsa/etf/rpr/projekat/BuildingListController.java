@@ -57,6 +57,9 @@ public class BuildingListController {
         type.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getTypeByString()));
 
         //uslov za disable buttons kad je gost
+        if(user.getType() == TypeOfUser.GUEST)  addBuilding.setDisable(true);
+        if(user.getType() == TypeOfUser.GUEST)  changeBuilding.setDisable(true);
+        if(user.getType() == TypeOfUser.GUEST)  deleteBuilding.setDisable(true);
 
     }
 

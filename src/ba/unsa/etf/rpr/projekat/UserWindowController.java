@@ -33,14 +33,12 @@ public class UserWindowController {
     public TableColumn<User,String> adress;
 
     private ObservableList<User> userObservableList;
-
     private BuildingManagementDAO dao;
 
     public UserWindowController(ArrayList<User> user) {
         userObservableList= FXCollections.observableArrayList(user);
         dao=BuildingManagementDAO.getInstance();
     }
-
 
     @FXML
     public void initialize(){
