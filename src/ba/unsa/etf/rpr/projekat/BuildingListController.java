@@ -35,9 +35,16 @@ public class BuildingListController {
     private ObservableList<Building> buildingObservableList;
 
     private BuildingManagementDAO dao;
+    private User user;
 
     public BuildingListController(ArrayList<Building> buildings) {
         dao = BuildingManagementDAO.getInstance();
+        buildingObservableList= FXCollections.observableArrayList(buildings);
+    }
+
+    public BuildingListController(ArrayList<Building> buildings,User user) {
+        dao = BuildingManagementDAO.getInstance();
+        this.user = user;
         buildingObservableList= FXCollections.observableArrayList(buildings);
     }
 
@@ -49,6 +56,8 @@ public class BuildingListController {
         flats.setCellValueFactory(new PropertyValueFactory("numberOfFlats"));
         type.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getTypeByString()));
 
+        //uslov za disable buttons kad je gost
+
     }
 
     public void addAction(){
@@ -57,7 +66,7 @@ public class BuildingListController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddBuilding.fxml"));
-            AddBuildingController muncipalityController = new AddBuildingController();
+            AddBuildingController muncipalityController = new AddBuildingController(user);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

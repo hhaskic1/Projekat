@@ -14,8 +14,8 @@ public class BuildingManagementDAO {
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
-    private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate;
-
+    private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
+    private PreparedStatement addBuildingUser;
     private BuildingManagementDAO(){
         try{
 
@@ -57,7 +57,12 @@ public class BuildingManagementDAO {
             isThereMuncipality=conn.prepareStatement("select * from Municipality where name=?");
             isThereBuildingOnThatAdress=conn.prepareStatement("select * from Building where adress=?");
             isThereBuildingOnThatAdressUpdate=conn.prepareStatement("select * from Building where adress=? and adress!=?");
-
+            getUserByParameters = conn.prepareStatement("select * from User where username = ? and password = ?");
+            getMuncipalityForUser = conn.prepareStatement("select Municipality.id, Municipality.name, Municipality.numberBuildings" +
+                                                                " from Municipality, User_Muncipality " +
+                    "                                             where User_Muncipality.idMuncipality = Municipality.id and " +
+                    "                                                   User_Muncipality.idUser = ?");
+            addBuildingUser = conn.prepareStatement("insert into Building_Muncipality values (?,?)");
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -463,7 +468,7 @@ public class BuildingManagementDAO {
         }
     }
 
-    public void addBuilding(Building building){
+    public void addBuilding(Building building, Municipality municipality){
 
         try {
             ResultSet rs=getNextBuilding.executeQuery();
@@ -478,6 +483,9 @@ public class BuildingManagementDAO {
 
             addBuilding.executeUpdate();
 
+            addBuildingUser.setInt(1,building.getId());
+            addBuildingUser.setInt(2,municipality.getIdMuncipality());
+            addBuildingUser.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -493,7 +501,7 @@ public class BuildingManagementDAO {
         }
     }
 
-    public void updateBuilding(Building building){
+    public void updateBuilding(Building building, Municipality municipality){
         try {
             updateBuilding.setString(1,building.getAdress());
             updateBuilding.setString(2,building.getNumberOfFlats());
@@ -575,6 +583,44 @@ public class BuildingManagementDAO {
         } catch (SQLException e) {
             e.printStackTrace();
 
+        }
+    }
+
+    public User getUserByParameters(String username, String password){
+        try {
+
+            getUserByParameters.setString(1, username);
+            getUserByParameters.setString(2, password);
+            ResultSet rs = getUserByParameters.executeQuery();
+
+            User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+
+            if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+            else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+            else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+
+            return u;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
+
+    public Municipality getMuncipalityForUser(User user){
+        try {
+            getMuncipalityForUser.setInt(1,user.getId());
+
+            ResultSet rs = getMuncipalityForUser.executeQuery();
+
+            Municipality municipality = new Municipality(rs.getInt(1),rs.getString(2),rs.getInt(3));
+            return municipality;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
         }
     }
 }

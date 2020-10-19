@@ -1,9 +1,11 @@
 package ba.unsa.etf.rpr.projekat;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.media.MediaException;
 import javafx.stage.Stage;
 
 
@@ -20,9 +22,19 @@ public class MainWindowController {
     public Button idJobs;
 
     private BuildingManagementDAO dao;
+    private User user;
 
     public MainWindowController() {
         dao=BuildingManagementDAO.getInstance();
+    }
+    public MainWindowController(User user) {
+        dao=BuildingManagementDAO.getInstance();
+        this.user = user;
+    }
+
+    @FXML
+    public void initialize() {
+        if(user.getType() == TypeOfUser.GUEST)  idJobs.setDisable(true);
     }
 
     public void muncipalityAction(){
@@ -31,7 +43,7 @@ public class MainWindowController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/MuncipalityList.fxml"));
-            MuncipalityController muncipalityController = new MuncipalityController(dao.getAllMuncipality());
+            MuncipalityController muncipalityController = new MuncipalityController(dao.getAllMuncipality(),user);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");
@@ -71,7 +83,7 @@ public class MainWindowController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
-            BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings());
+            BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings(),user);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

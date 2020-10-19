@@ -33,12 +33,13 @@ public class RegisterController {
 
     public void actionLogIn(){
         if(dao.checkUser(fieldUsername.getText(),fieldPassword.getText())) {
+            User user = dao.getUserByParameters(fieldUsername.getText(),fieldPassword.getText());
             try {
                 Stage stage = new Stage();
                 Parent root;
                 FXMLLoader loader = null;
                 loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
-                MainWindowController muncipalityController = new MainWindowController();
+                MainWindowController muncipalityController = new MainWindowController(user);
                 loader.setController(muncipalityController);
                 root = loader.load();
                 stage.setTitle("");

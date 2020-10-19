@@ -35,7 +35,7 @@
       <TextField fx:id="garage" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#actionSave" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label text="Općina" GridPane.rowIndex="6" />
-      <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Label fx:id="labela" text="Building Adress Already EXISTS!" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ComboBox fx:id="combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
    </children>
 </GridPane>

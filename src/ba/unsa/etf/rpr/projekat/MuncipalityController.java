@@ -34,10 +34,17 @@ public class MuncipalityController {
     private ObservableList<Municipality> buildingObservableList;
 
     private BuildingManagementDAO dao;
+    private User user;
 
     public MuncipalityController(ArrayList<Municipality> buildings) {
         buildingObservableList= FXCollections.observableArrayList(buildings);
         dao=BuildingManagementDAO.getInstance();
+    }
+
+    public MuncipalityController(ArrayList<Municipality> buildings, User user) {
+        buildingObservableList= FXCollections.observableArrayList(buildings);
+        dao=BuildingManagementDAO.getInstance();
+        this.user = user;
     }
 
     public MuncipalityController(){}
@@ -48,7 +55,12 @@ public class MuncipalityController {
         columnid.setCellValueFactory(new PropertyValueFactory("idMuncipality"));
         columName.setCellValueFactory(new PropertyValueFactory("nameOfMuncipality"));
         columnBuildings.setCellValueFactory(new PropertyValueFactory("numberOfBuildings"));
-
+        if(user.getType() == TypeOfUser.GUEST)  {
+            buttonAdd.setDisable(true);
+            buttonChange.setDisable(true);
+            buttonDelete.setDisable(true);
+            buttonDetails.setDisable(true);
+        }
     }
 
     public void actionAddMuncipality(){

@@ -43,4 +43,9 @@ public class Municipality {
         return true;
         else return false;
     }
+
+    @Override
+    public String toString() {
+        return nameOfMuncipality;
+    }
 }

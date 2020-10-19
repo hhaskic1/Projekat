@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr.projekat;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -16,10 +17,14 @@ public class AddBuildingController {
     public RadioButton newbuilding;
     public RadioButton oldBuilding;
     public RadioButton mall;
+    public ComboBox<Municipality> combo = new ComboBox<>();
 
     public ToggleGroup toggleGroup=new ToggleGroup();
     private Building buidling;
 
+    private ObservableList<Municipality> observableList;
+    private User user;
+    private Municipality municipality;
     private BuildingManagementDAO dao;
 
     public AddBuildingController(Building building) {
@@ -29,8 +34,17 @@ public class AddBuildingController {
     public AddBuildingController() {
     }
 
+    public AddBuildingController(User user) {
+        dao=BuildingManagementDAO.getInstance();
+        observableList = FXCollections.observableArrayList(dao.getAllMuncipality());
+        this.user = user;
+    }
+
     @FXML
     public void initialize(){
+
+        combo.setItems(observableList);
+        combo.setDisable(true);
 
         adress.textProperty().addListener((o,oldvalue,newvalue)->{
 
@@ -42,7 +56,7 @@ public class AddBuildingController {
         });
 
         labela.setVisible(false);
-        dao=BuildingManagementDAO.getInstance();
+
 
         newbuilding.setToggleGroup(toggleGroup);
         oldBuilding.setToggleGroup(toggleGroup);
@@ -74,6 +88,8 @@ public class AddBuildingController {
             }
 
         }
+
+        if(user.getType() == TypeOfUser.ADMINISTRATOR) combo.setDisable(false);
 
     }
 
@@ -123,10 +139,15 @@ public class AddBuildingController {
             buidling.setGarage(Integer.parseInt(garage.getText()));
 
         }
+
+        if(user.getType() == TypeOfUser.USER)   municipality = dao.getMuncipalityForUser(user);
+
+
+
         if(stanje)
-            dao.addBuilding(buidling);
+            dao.addBuilding(buidling, municipality);
         else
-            dao.updateBuilding(buidling);
+            dao.updateBuilding(buidling, municipality);
 
         Stage stage=(Stage) buttonSave.getScene().getWindow();
         stage.close();
