@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String adress;
     private int id;
+    private TypeOfUser type;
 
     public int getId() {
         return id;
@@ -86,6 +87,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public TypeOfUser getType() {
+        return type;
+    }
+
+    public void setType(TypeOfUser type) {
+        this.type = type;
     }
 
     @Override

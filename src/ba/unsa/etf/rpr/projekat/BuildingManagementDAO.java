@@ -36,10 +36,10 @@ public class BuildingManagementDAO {
             addMuncipalityAndUser=conn.prepareStatement("INSERT into User_Muncipality values(?,?)");
             updateMuncipality=conn.prepareStatement("UPDATE Municipality set name=? where id=?");
             getMuncipalityByName=conn.prepareStatement("SELECT id from Municipality where name=? ");
-            addUser=conn.prepareStatement("INSERT into User values (?,?,?,?,?,?,?,?)");
+            addUser=conn.prepareStatement("INSERT into User values (?,?,?,?,?,?,?,?,?)");
             getNextUser=conn.prepareStatement("select Max (id)+1 from User");
             isThereUser=conn.prepareStatement("SELECT * from User where username=?");
-            updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=? where id=?");
+            updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=?, type=? where id=?");
             deleteUser=conn.prepareStatement("DELETE from User where id=?");
             getAllBuildings=conn.prepareStatement("select * from Building");
             addBuilding=conn.prepareStatement("INSERT into Building values(?,?,?,?,?)");
@@ -137,6 +137,11 @@ public class BuildingManagementDAO {
             while(rs.next()){
                 User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
                 u.setId(rs.getInt(1));
+
+                if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+                else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+                else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+
                 users.add(u);
             }
         return users;
@@ -190,8 +195,14 @@ public class BuildingManagementDAO {
 
 
 
-                User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
-               return u;
+            User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+
+            if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+            else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+            else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+
+
+            return u;
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -259,6 +270,11 @@ public class BuildingManagementDAO {
             addUser.setString(6,user.getAdress());
             addUser.setString(7,user.getUsername());
             addUser.setString(8,user.getPassword());
+
+            if(user.getType() == TypeOfUser.ADMINISTRATOR)   addUser.setInt(9,1);
+            else if(user.getType() == TypeOfUser.USER)   addUser.setInt(9,2);
+            else if(user.getType() == TypeOfUser.GUEST)   addUser.setInt(9,3);
+
 
             addUser.executeUpdate();
 
@@ -399,7 +415,15 @@ public class BuildingManagementDAO {
             updateUser.setString(5,user.getAdress());
             updateUser.setString(6,user.getUsername());
             updateUser.setString(7,user.getPassword());
-            updateUser.setInt(8,user.getId());
+
+
+
+            if(user.getType() == TypeOfUser.ADMINISTRATOR)   updateUser.setInt(8,1);
+            else if(user.getType() == TypeOfUser.USER)   updateUser.setInt(8,2);
+            else if(user.getType() == TypeOfUser.GUEST)   updateUser.setInt(8,3);
+
+            updateUser.setInt(9,user.getId());
+
 
             updateUser.executeUpdate();
 
