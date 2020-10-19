@@ -15,16 +15,20 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Name of job:" GridPane.rowIndex="1" />
       <Label text="Date of Job:" GridPane.rowIndex="2" />
-      <Label text="Job fnisihed:" GridPane.rowIndex="3" />
-      <Label text="Contractor" GridPane.rowIndex="4" />
+      <Label text="Job fnisihed:" GridPane.rowIndex="4" />
+      <Label text="Contractor" GridPane.rowIndex="6" />
       <TextField fx:id="nameJobs" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="dateJob" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="jobFinish" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="contractor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#buttonSave" text="Save and back" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <TextField fx:id="dateJob" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="jobFinish" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="contractor" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#buttonSave" text="Save and back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label fx:id="labela1" text="Invalid INPUT!" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label fx:id="labela2" text="Invalid INPUT" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
    </children>
 </GridPane>

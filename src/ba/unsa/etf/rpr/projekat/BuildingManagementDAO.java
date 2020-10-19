@@ -14,7 +14,7 @@ public class BuildingManagementDAO {
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
-    private PreparedStatement isThereMuncipality;
+    private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate;
 
     private BuildingManagementDAO(){
         try{
@@ -55,6 +55,8 @@ public class BuildingManagementDAO {
             isThereUserByParametersExceptUser=conn.prepareStatement("SELECT * from User where username=? and username!=?");
             checkUser=conn.prepareStatement("select * from User where password=? and username=?");
             isThereMuncipality=conn.prepareStatement("select * from Municipality where name=?");
+            isThereBuildingOnThatAdress=conn.prepareStatement("select * from Building where adress=?");
+            isThereBuildingOnThatAdressUpdate=conn.prepareStatement("select * from Building where adress=? and adress!=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -285,6 +287,46 @@ public class BuildingManagementDAO {
         }
 
     }
+
+
+    public Boolean isThereBuildingOnThatAdress(String adress){
+        try{
+
+            isThereBuildingOnThatAdress.setString(1,adress);
+
+            ResultSet rs=isThereBuildingOnThatAdress.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+    public Boolean isThereBuildingOnThatAdressUpdate(String adress1,String oldAdress){
+        try{
+
+            isThereBuildingOnThatAdressUpdate.setString(1,adress1);
+            isThereBuildingOnThatAdressUpdate.setString(2,oldAdress);
+
+            ResultSet rs=isThereBuildingOnThatAdressUpdate.executeQuery();
+
+            if(rs.next()) return true;
+            return false;
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
     public Boolean isThereUser(String username,String password){
         try{

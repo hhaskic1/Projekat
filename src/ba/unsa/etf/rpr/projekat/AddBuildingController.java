@@ -2,10 +2,7 @@ package ba.unsa.etf.rpr.projekat;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class AddBuildingController {
@@ -14,6 +11,7 @@ public class AddBuildingController {
     public TextField flats;
     public TextField garage;
     public Button buttonSave;
+    public Label labela;
 
     public RadioButton newbuilding;
     public RadioButton oldBuilding;
@@ -33,6 +31,17 @@ public class AddBuildingController {
 
     @FXML
     public void initialize(){
+
+        adress.textProperty().addListener((o,oldvalue,newvalue)->{
+
+            if(!oldvalue.contentEquals(newvalue)) {
+                adress.getStyleClass().removeAll("poljeNijeIspravno");
+                labela.setVisible(false);
+
+            }
+        });
+
+        labela.setVisible(false);
         dao=BuildingManagementDAO.getInstance();
 
         newbuilding.setToggleGroup(toggleGroup);
@@ -79,6 +88,23 @@ public class AddBuildingController {
     }
 
     public void actionSave(){
+
+        if(buidling==null){
+            if (dao.isThereBuildingOnThatAdress(adress.getText())) {
+                adress.getStyleClass().add("poljeNijeIspravno");
+                labela.setVisible(true);
+                return;
+            }
+        }else{
+
+            if (dao.isThereBuildingOnThatAdressUpdate(adress.getText(),buidling.getAdress())) {
+                adress.getStyleClass().add("poljeNijeIspravno");
+                labela.setVisible(true);
+                return;
+            }
+
+        }
+
         Boolean stanje = false;
         if(buidling == null) {
             buidling = new Building(0, adress.getText(), flats.getText());
