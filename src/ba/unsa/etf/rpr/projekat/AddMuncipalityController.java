@@ -3,10 +3,7 @@ package ba.unsa.etf.rpr.projekat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ import java.util.ArrayList;
 public class AddMuncipalityController {
 
     public TextField nameID;
-    public ChoiceBox<User> managerID=new ChoiceBox<>();
+    public ComboBox<User> managerID=new ComboBox<>();
     public Button saveBack;
     public Label labela;
 
