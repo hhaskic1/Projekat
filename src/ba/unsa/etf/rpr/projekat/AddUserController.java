@@ -29,13 +29,18 @@ public class AddUserController {
 
     private BuildingManagementDAO dao;
     private User user=null;
+    private Boolean changeProfile = false;
 
     public AddUserController() {
     }
 
     public AddUserController(User user) {
         this.user=user;
+    }
 
+    public AddUserController(User user,Boolean changeProfile) {
+        this.user=user;
+        this.changeProfile=changeProfile;
     }
 
     @FXML
@@ -90,6 +95,13 @@ public class AddUserController {
 
             }
         });
+
+
+        if(changeProfile && user.getType()!=TypeOfUser.ADMINISTRATOR){
+            radioUser.setDisable(true);
+            radioAdmin.setDisable(true);
+            radioGuest.setDisable(true);
+        }
 
     }
 

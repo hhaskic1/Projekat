@@ -82,6 +82,11 @@ public class RegisterController {
 
     }
 
+    public void buttonExit(){
+        Stage stage=(Stage) buttonExit.getScene().getWindow();
+        stage.close();
+    }
+
 
 
 }

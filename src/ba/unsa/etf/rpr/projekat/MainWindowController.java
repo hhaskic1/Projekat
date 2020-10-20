@@ -88,7 +88,7 @@ public class MainWindowController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddUsers.fxml"));
-            AddUserController muncipalityController = new AddUserController(user);
+            AddUserController muncipalityController = new AddUserController(user,true);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");
