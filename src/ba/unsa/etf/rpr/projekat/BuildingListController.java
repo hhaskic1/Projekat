@@ -101,7 +101,7 @@ public void changeBuilding(){
         Parent root;
         FXMLLoader loader = null;
         loader = new FXMLLoader(getClass().getResource("/fxml/AddBuilding.fxml"));
-        AddBuildingController muncipalityController = new AddBuildingController(building);
+        AddBuildingController muncipalityController = new AddBuildingController(building,user);
         loader.setController(muncipalityController);
         root = loader.load();
         stage.setTitle("");

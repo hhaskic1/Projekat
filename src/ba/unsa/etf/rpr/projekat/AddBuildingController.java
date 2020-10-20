@@ -31,6 +31,13 @@ public class AddBuildingController {
         this.buidling=building;
     }
 
+    public AddBuildingController(Building building, User user) {
+        dao=BuildingManagementDAO.getInstance();
+        observableList = FXCollections.observableArrayList(dao.getAllMuncipality());
+        this.buidling=building;
+        this.user = user;
+    }
+
     public AddBuildingController() {
     }
 
@@ -39,6 +46,8 @@ public class AddBuildingController {
         observableList = FXCollections.observableArrayList(dao.getAllMuncipality());
         this.user = user;
     }
+
+
 
     @FXML
     public void initialize(){
@@ -123,7 +132,7 @@ public class AddBuildingController {
 
         Boolean stanje = false;
         if(buidling == null) {
-            buidling = new Building(0, adress.getText(), flats.getText());
+            buidling = new Building(dao.getNextBuildingId(), adress.getText(), flats.getText());
             stanje = true;
         }
         buidling.setAdress(adress.getText());
@@ -141,13 +150,14 @@ public class AddBuildingController {
         }
 
         if(user.getType() == TypeOfUser.USER)   municipality = dao.getMuncipalityForUser(user);
+        if(user.getType() == TypeOfUser.ADMINISTRATOR) municipality = combo.getSelectionModel().getSelectedItem();
 
 
 
         if(stanje)
             dao.addBuilding(buidling, municipality);
         else
-            dao.updateBuilding(buidling, municipality);
+            dao.updateBuilding(buidling,municipality);
 
         Stage stage=(Stage) buttonSave.getScene().getWindow();
         stage.close();

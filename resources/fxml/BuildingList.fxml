@@ -9,12 +9,12 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="76.4" minHeight="10.0" prefHeight="66.4" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="273.4" minHeight="10.0" prefHeight="273.4" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="128.40000000000003" minHeight="8.400000000000034" prefHeight="8.400000000000034" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="buidlingList" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <TableView fx:id="buidlingList" prefHeight="218.0" prefWidth="300.0" GridPane.rowIndex="1">
         <columns>
           <TableColumn fx:id="id" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="adress" prefWidth="75.0" text="Adress" />
@@ -22,14 +22,18 @@
             <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
         </columns>
       </TableView>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="36.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="addBuilding" mnemonicParsing="false" onAction="#addAction" text="Add Building" />
-            <Button fx:id="changeBuilding" mnemonicParsing="false" onAction="#changeBuilding" text="Change Building" />
-            <Button fx:id="deleteBuilding" mnemonicParsing="false" onAction="#deleteBuilding" text="Delete Building" />
-            <Button mnemonicParsing="false" text="Details" />
+            <Button fx:id="addBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#addAction" prefHeight="12.0" prefWidth="150.0" text="Add Building" />
+            <Button fx:id="changeBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#changeBuilding" text="Change Building" />
+            <Button fx:id="deleteBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#deleteBuilding" text="Delete Building" />
+            <Button minWidth="150.0" mnemonicParsing="false" text="Details" />
          </children>
       </VBox>
-      <Button fx:id="exit" mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Button fx:id="exit" alignment="CENTER" minWidth="75.0" mnemonicParsing="false" text="Exit" />
+         </children>
+      </VBox>
    </children>
 </GridPane>

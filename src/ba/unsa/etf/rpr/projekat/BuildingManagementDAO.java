@@ -15,7 +15,7 @@ public class BuildingManagementDAO {
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
-    private PreparedStatement addBuildingUser;
+    private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality;
     private BuildingManagementDAO(){
         try{
 
@@ -63,6 +63,10 @@ public class BuildingManagementDAO {
                     "                                             where User_Muncipality.idMuncipality = Municipality.id and " +
                     "                                                   User_Muncipality.idUser = ?");
             addBuildingUser = conn.prepareStatement("insert into Building_Muncipality values (?,?)");
+            updateMuncipalityBuilding = conn.prepareStatement("update Building_Muncipality set id2 = ? where id1 = ?");
+            deleteMuncipalityBuilding = conn.prepareStatement("delete from Building_Muncipality where id1 = ?");
+            deleteBuildingMuncipality = conn.prepareStatement("delete from Building_Muncipality where id2 = ?");
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -184,6 +188,9 @@ public class BuildingManagementDAO {
             deleteMuncipality.setInt(1,municipality.getIdMuncipality());
             deleteMuncipality.executeUpdate();
 
+            deleteBuildingMuncipality.setInt(1,municipality.getIdMuncipality());
+            deleteBuildingMuncipality.executeUpdate();
+
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -202,6 +209,7 @@ public class BuildingManagementDAO {
 
             User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
 
+            u.setId(id);
             if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
             else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
             else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
@@ -496,6 +504,9 @@ public class BuildingManagementDAO {
         try{
             deleteBuilding.setInt(1,building.getId());
             deleteBuilding.executeUpdate();
+
+            deleteMuncipalityBuilding.setInt(1,building.getId());
+            deleteMuncipalityBuilding.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -521,6 +532,9 @@ public class BuildingManagementDAO {
 
             updateBuilding.executeUpdate();
 
+            updateMuncipalityBuilding.setInt(1,municipality.getIdMuncipality());
+            updateMuncipalityBuilding.setInt(2,building.getId());
+            updateMuncipalityBuilding.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -595,6 +609,7 @@ public class BuildingManagementDAO {
 
             User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
 
+            u.setId(rs.getInt(1));
             if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
             else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
             else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
@@ -623,4 +638,16 @@ public class BuildingManagementDAO {
             return null;
         }
     }
+    public int getNextBuildingId(){
+        try {
+            ResultSet resultSet = getNextBuilding.executeQuery();
+            if(resultSet.getInt(1) == 0) return 1;
+            return resultSet.getInt(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
 }

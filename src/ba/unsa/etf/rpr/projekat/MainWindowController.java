@@ -18,6 +18,7 @@ public class MainWindowController {
     public Button buildingButton;
     public Button userButton;
     public Button MuncipalityButton;
+    public Button updateProfile;
 
     public Button idJobs;
 
@@ -34,7 +35,11 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
-        if(user.getType() == TypeOfUser.GUEST)  idJobs.setDisable(true);
+        if(user.getType() == TypeOfUser.GUEST)  {
+            idJobs.setDisable(true);
+            userButton.setDisable(true);
+        }
+
     }
 
     public void muncipalityAction(){
@@ -64,6 +69,26 @@ public class MainWindowController {
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/UserWindow.fxml"));
             UserWindowController muncipalityController = new UserWindowController(dao.getAllUsers());
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateProfile(){
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddUsers.fxml"));
+            AddUserController muncipalityController = new AddUserController(user);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");
