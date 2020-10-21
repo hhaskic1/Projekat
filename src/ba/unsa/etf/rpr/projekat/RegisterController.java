@@ -21,6 +21,7 @@ public class RegisterController {
     public PasswordField fieldPassword;
     public Button buttonLogIn;
     public Button buttonExit;
+    public Button register;
     public Label labela=new Label();
 
 
@@ -87,6 +88,24 @@ public class RegisterController {
         stage.close();
     }
 
+
+    public void register(){
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddUsers.fxml"));
+            AddUserController muncipalityController = new AddUserController(true);
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

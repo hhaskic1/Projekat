@@ -30,6 +30,7 @@ public class AddUserController {
     private BuildingManagementDAO dao;
     private User user=null;
     private Boolean changeProfile = false;
+    private Boolean registeringNewFromFirstPage=false;
 
     public AddUserController() {
     }
@@ -41,6 +42,9 @@ public class AddUserController {
     public AddUserController(User user,Boolean changeProfile) {
         this.user=user;
         this.changeProfile=changeProfile;
+    }
+    public AddUserController(Boolean registeringNewFromFirstPage) {
+        this.registeringNewFromFirstPage=registeringNewFromFirstPage;
     }
 
     @FXML
@@ -101,6 +105,11 @@ public class AddUserController {
             radioUser.setDisable(true);
             radioAdmin.setDisable(true);
             radioGuest.setDisable(true);
+        }
+
+        if(registeringNewFromFirstPage){
+            radioAdmin.setDisable(true);
+            radioGuest.setSelected(true);
         }
 
     }

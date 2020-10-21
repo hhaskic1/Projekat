@@ -21,9 +21,14 @@
       <TextField fx:id="fieldUsername" minWidth="150.0" prefWidth="100.0" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
        <PasswordField fx:id="fieldPassword" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button fx:id="buttonExit" minWidth="100.0" mnemonicParsing="false" onAction="#buttonExit" text="Exit" GridPane.rowIndex="4" />
-      <Button fx:id="buttonLogIn" minWidth="100.0" mnemonicParsing="false" onAction="#actionLogIn" text="Log In" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <Label text="Please enter your username and password :" />
       <Label fx:id="labela" text="INVALID USERNAME OR PASSWORD" textFill="#ff2600" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Button fx:id="buttonLogIn" minWidth="100.0" mnemonicParsing="false" onAction="#actionLogIn" text="Log In" />
+            <Button fx:id="register" mnemonicParsing="false" onAction="#register" text="Register" />
+         </children>
+      </VBox>
 
    </children>
 </GridPane>
