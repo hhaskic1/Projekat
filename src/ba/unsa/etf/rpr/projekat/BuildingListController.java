@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class BuildingListController {
     public Button changeBuilding;
     public Button deleteBuilding;
     public Button exit;
+    public Button details;
 
     public TableView<Building> buidlingList;
     public TableColumn<Building,Integer> id;
@@ -117,6 +119,17 @@ public void changeBuilding(){
 
     }catch (IOException e){
         e.printStackTrace();
+    }
+}
+
+public void details(){
+    try {
+
+        if(user.getType() == TypeOfUser.ADMINISTRATOR) new Report().showReport(dao.getConnection(),"/reports/GetAllBuilding.jrxml");
+        else if(user.getType() == TypeOfUser.USER)
+        new Report().showReport(dao.getConnection(),"/reports/buildingReport.jrxml", user.getId());
+    } catch (JRException e1) {
+        e1.printStackTrace();
     }
 }
 

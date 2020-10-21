@@ -27,7 +27,7 @@
             <Button fx:id="addBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#addAction" prefHeight="12.0" prefWidth="150.0" text="Add Building" />
             <Button fx:id="changeBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#changeBuilding" text="Change Building" />
             <Button fx:id="deleteBuilding" minWidth="150.0" mnemonicParsing="false" onAction="#deleteBuilding" text="Delete Building" />
-            <Button minWidth="150.0" mnemonicParsing="false" text="Details" />
+            <Button fx:id="details" minWidth="150.0" mnemonicParsing="false" onAction="#details" text="Details" />
          </children>
       </VBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
