@@ -73,6 +73,10 @@ public class BuildingManagementDAO {
     }
 
 
+    public Connection getConnection() {
+        return conn;
+    }
+
     public static BuildingManagementDAO getInstance(){
         if(instance==null) instance=new BuildingManagementDAO();
         return instance;

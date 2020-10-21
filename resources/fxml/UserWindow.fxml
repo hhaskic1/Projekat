@@ -32,7 +32,7 @@
             <Button fx:id="addUser" minWidth="100.0" mnemonicParsing="false" onAction="#addAction" text="Add User" />
             <Button fx:id="changeUser" minWidth="100.0" mnemonicParsing="false" onAction="#changeUser" text="Change User" />
             <Button fx:id="deleteUser" minWidth="100.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete User" />
-            <Button fx:id="details" minWidth="100.0" mnemonicParsing="false" text="Details" />
+            <Button fx:id="details" minWidth="100.0" mnemonicParsing="false" onAction="#detailsAction" text="Details" />
          </children>
       </VBox>
       <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#exitAction" text="EXIT" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />

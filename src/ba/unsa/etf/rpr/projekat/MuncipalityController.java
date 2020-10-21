@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,6 +119,14 @@ public class MuncipalityController {
             e.printStackTrace();
         }
 
+    }
+
+    public void detailsAction(){
+        try {
+            new Report().showReport(dao.getConnection(),"/reports/muncipalityReport.jrxml");
+        } catch (JRException e1) {
+            e1.printStackTrace();
+        }
     }
 
 
