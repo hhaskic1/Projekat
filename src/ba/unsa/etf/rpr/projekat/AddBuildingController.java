@@ -26,6 +26,7 @@ public class AddBuildingController {
     private User user;
     private Municipality municipality;
     private BuildingManagementDAO dao;
+    private Boolean updateState = false;
 
     public AddBuildingController(Building building) {
         this.buidling=building;
@@ -36,6 +37,14 @@ public class AddBuildingController {
         observableList = FXCollections.observableArrayList(dao.getAllMuncipality());
         this.buidling=building;
         this.user = user;
+    }
+
+    public AddBuildingController(Building building, User user, Boolean updateState) {
+        dao=BuildingManagementDAO.getInstance();
+        observableList = FXCollections.observableArrayList(dao.getAllMuncipality());
+        this.buidling=building;
+        this.user = user;
+        this.updateState = updateState;
     }
 
     public AddBuildingController() {
@@ -100,6 +109,9 @@ public class AddBuildingController {
 
         if(user.getType() == TypeOfUser.ADMINISTRATOR) combo.setDisable(false);
 
+
+        if(updateState) combo.setDisable(true);
+
     }
 
     public void actionBuilding(){
@@ -153,11 +165,10 @@ public class AddBuildingController {
         if(user.getType() == TypeOfUser.ADMINISTRATOR) municipality = combo.getSelectionModel().getSelectedItem();
 
 
-
         if(stanje)
             dao.addBuilding(buidling, municipality);
         else
-            dao.updateBuilding(buidling,municipality);
+            dao.updateBuilding(buidling);
 
         Stage stage=(Stage) buttonSave.getScene().getWindow();
         stage.close();

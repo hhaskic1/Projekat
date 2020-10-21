@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -103,12 +104,15 @@ public class MainWindowController {
     }
 
     public void buildingAction(){
+        ArrayList<Building> buildings = new ArrayList<>();
+        if(user.getType() == TypeOfUser.USER) buildings = dao.getAllBuildingsFromUser(user);
+                else buildings = dao.getAllBuildings();
         try {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/BuildingList.fxml"));
-            BuildingListController muncipalityController = new BuildingListController(dao.getAllBuildings(),user);
+            BuildingListController muncipalityController = new BuildingListController(buildings,user);
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

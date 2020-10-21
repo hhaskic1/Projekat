@@ -15,7 +15,9 @@ public class BuildingManagementDAO {
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
-    private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality;
+    private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2;
+    private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser;
+
     private BuildingManagementDAO(){
         try{
 
@@ -35,6 +37,7 @@ public class BuildingManagementDAO {
             getUserById=conn.prepareStatement("select * from User where id=?");
             addMuncipalityAndUser=conn.prepareStatement("INSERT into User_Muncipality values(?,?)");
             updateMuncipality=conn.prepareStatement("UPDATE Municipality set name=? where id=?");
+            updateMuncipality2=conn.prepareStatement("UPDATE Municipality set name=?, numberBuildings = ? where id=?");
             getMuncipalityByName=conn.prepareStatement("SELECT id from Municipality where name=? ");
             addUser=conn.prepareStatement("INSERT into User values (?,?,?,?,?,?,?,?,?)");
             getNextUser=conn.prepareStatement("select Max (id)+1 from User");
@@ -66,6 +69,8 @@ public class BuildingManagementDAO {
             updateMuncipalityBuilding = conn.prepareStatement("update Building_Muncipality set id2 = ? where id1 = ?");
             deleteMuncipalityBuilding = conn.prepareStatement("delete from Building_Muncipality where id1 = ?");
             deleteBuildingMuncipality = conn.prepareStatement("delete from Building_Muncipality where id2 = ?");
+            getMuncipalityFromBM = conn.prepareStatement("select Municipality.id, Municipality.name, Municipality.numberBuildings from Municipality, Building_Muncipality where Building_Muncipality.id2 = Municipality.id and Building_Muncipality.id1 = ?");
+            getAllBuildingsFromUser = conn.prepareStatement("select Building.id, Building.adress, Building.numberOfFlats, Building.type, Building.garage from Building, User_Muncipality,Building_Muncipality,User where User_Muncipality.idUser = User.id and User_Muncipality.idMuncipality = Building_Muncipality.id2 and Building_Muncipality.id1 = Building.id and User.id = ?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -232,6 +237,7 @@ public class BuildingManagementDAO {
             ResultSet rs=getNextMuncipalityID.executeQuery();
 
             int id=rs.getInt(1);
+            if(id==0) id++;
             addMuncipality.setInt(1,id);
             addMuncipality.setString(2,name);
             addMuncipality.setInt(3,0);
@@ -254,6 +260,7 @@ public class BuildingManagementDAO {
             /*getMuncipalityByName.setString(1,id);
             ResultSet rs=getMuncipalityByName.executeQuery();
             int identity=rs.getInt(1);*/
+
             //modifikovanje samo munci
             updateMuncipality.setString(1,name);
             updateMuncipality.setInt(2,id);
@@ -499,6 +506,12 @@ public class BuildingManagementDAO {
             addBuildingUser.setInt(2,municipality.getIdMuncipality());
             addBuildingUser.executeUpdate();
 
+            updateMuncipality2.setString(1,municipality.getNameOfMuncipality());
+            updateMuncipality2.setInt(2,municipality.getNumberOfBuildings() + 1);
+            updateMuncipality2.setInt(3,municipality.getIdMuncipality());
+
+            updateMuncipality2.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -506,17 +519,34 @@ public class BuildingManagementDAO {
 
     public void deleteBuilding(Building building){
         try{
-            deleteBuilding.setInt(1,building.getId());
-            deleteBuilding.executeUpdate();
+
+
+
+
+            getMuncipalityFromBM.setInt(1,building.getId());
+            ResultSet resultSet = getMuncipalityFromBM.executeQuery();
+            Municipality municipality = new Municipality(resultSet.getInt(1),resultSet.getString(2),resultSet.getInt(3));
+
+            updateMuncipality2.setString(1, municipality.getNameOfMuncipality());
+            updateMuncipality2.setInt(2,municipality.getNumberOfBuildings() - 1);
+            updateMuncipality2.setInt(3, municipality.getIdMuncipality());
+
+            updateMuncipality2.executeUpdate();
 
             deleteMuncipalityBuilding.setInt(1,building.getId());
             deleteMuncipalityBuilding.executeUpdate();
+
+            deleteBuilding.setInt(1,building.getId());
+            deleteBuilding.executeUpdate();
+
+
+
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
 
-    public void updateBuilding(Building building, Municipality municipality){
+    public void updateBuilding(Building building){
         try {
             updateBuilding.setString(1,building.getAdress());
             updateBuilding.setString(2,building.getNumberOfFlats());
@@ -536,9 +566,7 @@ public class BuildingManagementDAO {
 
             updateBuilding.executeUpdate();
 
-            updateMuncipalityBuilding.setInt(1,municipality.getIdMuncipality());
-            updateMuncipalityBuilding.setInt(2,building.getId());
-            updateMuncipalityBuilding.executeUpdate();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -650,6 +678,27 @@ public class BuildingManagementDAO {
         }catch (SQLException e){
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public ArrayList<Building> getAllBuildingsFromUser(User user){
+        try {
+            getAllBuildingsFromUser.setInt(1,user.getId());
+            ResultSet rs=getAllBuildingsFromUser.executeQuery();
+            ArrayList<Building> buildings = new ArrayList<>();
+            while(rs.next()){
+                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+                if(rs.getInt(4) == 1)b.setType(BuildingType.NewBuilding);
+                else if(rs.getInt(4) == 2)b.setType(BuildingType.OldBuilding);
+                else b.setType(BuildingType.Mall);
+                buildings.add(b);
+            }
+            return buildings;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
