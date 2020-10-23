@@ -14,37 +14,59 @@ public class AddMuncipalityController {
     public ComboBox<User> managerID=new ComboBox<>();
     public Button saveBack;
     public Label labela;
+    public Button add;
+    public Button delete;
+    public ListView<User> userListView;
+
 
     private BuildingManagementDAO dao;
     private ObservableList<User> observableList;
+    private ObservableList<User> managerList;
     private Municipality municipality=null;
+    private Boolean changes = false;
 
 
+    //add
     public AddMuncipalityController(ArrayList<User>users) {
         dao=BuildingManagementDAO.getInstance();
         observableList= FXCollections.observableArrayList(users);
     }
 
+    public AddMuncipalityController(ArrayList<User>users, ArrayList<User> managerList) {
+        dao=BuildingManagementDAO.getInstance();
+        observableList= FXCollections.observableArrayList(users);
+        this.managerList = FXCollections.observableArrayList(managerList);
+    }
+
+    //update
     public AddMuncipalityController(ArrayList<User>users,Municipality municipality) {
         dao=BuildingManagementDAO.getInstance();
         observableList= FXCollections.observableArrayList(users);
         this.municipality=municipality;
     }
 
+    public AddMuncipalityController(ArrayList<User>users,Municipality municipality,  ArrayList<User> managerList) {
+        dao=BuildingManagementDAO.getInstance();
+        observableList= FXCollections.observableArrayList(users);
+        this.municipality=municipality;
+        this.managerList = FXCollections.observableArrayList(managerList);
+    }
+
     public void actionSave(){
-        if(dao.isThereMuncipality(nameID.getText())){
+        if(dao.isThereMuncipality(nameID.getText()) && !changes){
             nameID.getStyleClass().add("poljeNijeIspravno");
             return;
         }
+
         if(managerID.getSelectionModel().getSelectedItem()==null){
             labela.setVisible(true);
             return;
         }
 
         if(municipality==null)
-        dao.AddMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem());
-        else{
-            dao.updateMuncipality(municipality.getIdMuncipality(),nameID.getText(),managerID.getSelectionModel().getSelectedItem());
+            dao.AddMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem());
+        else {
+            dao.updateMuncipality(municipality.getIdMuncipality(),nameID.getText());
         }
         Stage stage=(Stage) saveBack.getScene().getWindow();
         stage.close();
@@ -75,6 +97,31 @@ public class AddMuncipalityController {
             }
         });
 
+        if(managerList == null){
+            userListView.setDisable(true);
+            add.setDisable(true);
+            delete.setDisable(true);
+        }else{
+            userListView.setItems(managerList);
+        }
+
+    }
+
+    public void addAction(){
+        if(managerID.getSelectionModel().getSelectedItem() != null){
+            dao.addUserToMunicipality(managerID.getSelectionModel().getSelectedItem(),municipality);
+            managerList.setAll(dao.getAllManagersInMunicipality(municipality));
+            userListView.setItems(managerList);
+            changes = true;
+            dao.deleteUserFromMunicipality(managerID.getSelectionModel().getSelectedItem(), municipality);
+        }
+    }
+
+    public void deleteAction(){
+        changes = true;
+        dao.deleteUserFromMunicipality2(userListView.getSelectionModel().getSelectedItem(), municipality);
+        managerList.setAll(dao.getAllManagersInMunicipality(municipality));
+        userListView.setItems(managerList);
     }
 
 

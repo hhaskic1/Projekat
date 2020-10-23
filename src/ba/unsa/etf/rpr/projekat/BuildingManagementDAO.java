@@ -16,7 +16,8 @@ public class BuildingManagementDAO {
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
     private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2;
-    private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser;
+    private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser, addUserToMunicipality, deleteUserFromMunicipality, isThereUserInMunicipality;
+    private PreparedStatement deleteUserFromMunicipality2;
 
     private BuildingManagementDAO(){
         try{
@@ -71,6 +72,12 @@ public class BuildingManagementDAO {
             deleteBuildingMuncipality = conn.prepareStatement("delete from Building_Muncipality where id2 = ?");
             getMuncipalityFromBM = conn.prepareStatement("select Municipality.id, Municipality.name, Municipality.numberBuildings from Municipality, Building_Muncipality where Building_Muncipality.id2 = Municipality.id and Building_Muncipality.id1 = ?");
             getAllBuildingsFromUser = conn.prepareStatement("select Building.id, Building.adress, Building.numberOfFlats, Building.type, Building.garage from Building, User_Muncipality,Building_Muncipality,User where User_Muncipality.idUser = User.id and User_Muncipality.idMuncipality = Building_Muncipality.id2 and Building_Muncipality.id1 = Building.id and User.id = ?");
+            addUserToMunicipality = conn.prepareStatement("insert into User_Muncipality values (?,?)");
+            deleteUserFromMunicipality = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality != ?");
+            deleteUserFromMunicipality2 = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality = ?");
+
+            isThereUserInMunicipality = conn.prepareStatement("select  * from User_Muncipality where idUser = ?");
+
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -210,6 +217,7 @@ public class BuildingManagementDAO {
         try{
             getUserFromMuncipality.setInt(1,municipality.getIdMuncipality());
             ResultSet rs2=getUserFromMuncipality.executeQuery();
+            if(rs2.next()){
             int id=rs2.getInt(1);
             getUserById.setInt(1,id);
             ResultSet rs=getUserById.executeQuery();
@@ -224,7 +232,9 @@ public class BuildingManagementDAO {
             else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
 
 
-            return u;
+            return u;}
+            else
+                return null;
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -254,23 +264,14 @@ public class BuildingManagementDAO {
         }
     }
 
-    public void updateMuncipality(Integer id, String name, User user){
+    public void updateMuncipality(Integer id, String name){
 
         try{
-            /*getMuncipalityByName.setString(1,id);
-            ResultSet rs=getMuncipalityByName.executeQuery();
-            int identity=rs.getInt(1);*/
 
-            //modifikovanje samo munci
+            //modifikovanje samo munci modifi naziv
             updateMuncipality.setString(1,name);
             updateMuncipality.setInt(2,id);
             updateMuncipality.executeUpdate();
-
-
-            //modifikovanje user-munci
-            updateUserMuncipality.setInt(1,user.getId());
-            updateUserMuncipality.setInt(2,id);
-            updateUserMuncipality.executeUpdate();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -702,5 +703,75 @@ public class BuildingManagementDAO {
         }
     }
 
+    public ArrayList<User> getAllManagersInMunicipality(Municipality municipality){
+        try{
+            ArrayList<User> users=new ArrayList<>();
+            if(municipality != null){
+                getUserFromMuncipality.setInt(1,municipality.getIdMuncipality());
+                ResultSet rs2=getUserFromMuncipality.executeQuery();
+                while(rs2.next()){
+                    getUserById.setInt(1,rs2.getInt(1));
+                    ResultSet rs = getUserById.executeQuery();
+                    User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                    u.setId(rs.getInt(1));
+
+                    if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+                    else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+                    else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+
+                    users.add(u);
+                }
+            }
+            else users = null;
+
+            return users;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void addUserToMunicipality(User user, Municipality municipality){
+        try {
+
+            addUserToMunicipality.setInt(1, user.getId());
+            addUserToMunicipality.setInt(2,municipality.getIdMuncipality());
+            addUserToMunicipality.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deleteUserFromMunicipality(User user, Municipality municipality){
+        try {
+
+            isThereUserInMunicipality.setInt(1,user.getId());
+            ResultSet resultSet = isThereUserInMunicipality.executeQuery();
+
+            if(resultSet.next()){
+                deleteUserFromMunicipality.setInt(1,user.getId());
+                deleteUserFromMunicipality.setInt(2,municipality.getIdMuncipality());
+                deleteUserFromMunicipality.executeUpdate();
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public void deleteUserFromMunicipality2(User user, Municipality municipality){
+        try {
+
+                deleteUserFromMunicipality2.setInt(1,user.getId());
+                deleteUserFromMunicipality2.setInt(2,municipality.getIdMuncipality());
+                deleteUserFromMunicipality2.executeUpdate();
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -102,7 +102,7 @@ public class MuncipalityController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddMuncipality.fxml"));
-            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers(),municipality);
+            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers(),municipality,dao.getAllManagersInMunicipality(municipality));
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("");

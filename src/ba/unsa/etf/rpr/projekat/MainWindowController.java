@@ -25,6 +25,7 @@ public class MainWindowController {
 
     private BuildingManagementDAO dao;
     private User user;
+    private Boolean muncipalityState = false;
 
     public MainWindowController() {
         dao=BuildingManagementDAO.getInstance();
@@ -36,10 +37,19 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
+
         if(user.getType() == TypeOfUser.GUEST)  {
             idJobs.setDisable(true);
             userButton.setDisable(true);
         }
+
+        if(user.getType() != TypeOfUser.ADMINISTRATOR) {
+            MuncipalityButton.setDisable(true);
+            userButton.setDisable(true);
+        }
+
+
+
 
     }
 
