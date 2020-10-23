@@ -17,7 +17,7 @@ public class BuildingManagementDAO {
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
     private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2;
     private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser, addUserToMunicipality, deleteUserFromMunicipality, isThereUserInMunicipality;
-    private PreparedStatement deleteUserFromMunicipality2;
+    private PreparedStatement deleteUserFromMunicipality2,getIdMunicipalityFromUser_Municipality,getIdMunicipalityFromBuilding_Municipality;
 
     private BuildingManagementDAO(){
         try{
@@ -75,9 +75,9 @@ public class BuildingManagementDAO {
             addUserToMunicipality = conn.prepareStatement("insert into User_Muncipality values (?,?)");
             deleteUserFromMunicipality = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality != ?");
             deleteUserFromMunicipality2 = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality = ?");
-
             isThereUserInMunicipality = conn.prepareStatement("select  * from User_Muncipality where idUser = ?");
-
+            getIdMunicipalityFromUser_Municipality = conn.prepareStatement("select idMuncipality from User_Muncipality where idUser=?");
+            getIdMunicipalityFromBuilding_Municipality = conn.prepareStatement("select id2 from Building_Muncipality where id1=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -761,17 +761,44 @@ public class BuildingManagementDAO {
             e.printStackTrace();
         }
     }
-    public void deleteUserFromMunicipality2(User user, Municipality municipality){
+    public void deleteUserFromMunicipality2(User user, Municipality municipality) {
         try {
 
-                deleteUserFromMunicipality2.setInt(1,user.getId());
-                deleteUserFromMunicipality2.setInt(2,municipality.getIdMuncipality());
-                deleteUserFromMunicipality2.executeUpdate();
+            deleteUserFromMunicipality2.setInt(1, user.getId());
+            deleteUserFromMunicipality2.setInt(2, municipality.getIdMuncipality());
+            deleteUserFromMunicipality2.executeUpdate();
 
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+        public int getIdMunicipalityFromUser_Municipality(User user){
+            try {
+                getIdMunicipalityFromUser_Municipality.setInt(1,user.getId());
+                ResultSet rs=getIdMunicipalityFromUser_Municipality.executeQuery();
+                if(rs.next())
+                return rs.getInt(1);
+                    return -1;
+            }catch (SQLException e){
+                e.printStackTrace();
+                return -1;
+            }
+
+        }
+
+        public int getIdMunicipalityFromBuilding_Municipality(Building building){
+            try {
+                getIdMunicipalityFromBuilding_Municipality.setInt(1,building.getId());
+                ResultSet rs=getIdMunicipalityFromBuilding_Municipality.executeQuery();
+                if(rs.next())
+                return rs.getInt(1);
+                    return -1;
+            }catch (SQLException e){
+                e.printStackTrace();
+                return -1;
+            }
+        }
 
 }

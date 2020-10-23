@@ -11,11 +11,18 @@
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Adress:" GridPane.rowIndex="1" />
-      <TextField fx:id="adressID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="buttonNext" mnemonicParsing="false" onAction="#buttonNext" text="Next" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="adressID" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Button fx:id="buttonNext" mnemonicParsing="false" onAction="#buttonNext" text="Add job" />
+            <Button fx:id="details" mnemonicParsing="false" onAction="#detailsAction" text="Details" />
+         </children>
+      </HBox>
+      <Label fx:id="labelError" prefHeight="18.0" prefWidth="351.0" text="You entered wrong Adress! This Adress is not in your Municipalitiy!!!" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>

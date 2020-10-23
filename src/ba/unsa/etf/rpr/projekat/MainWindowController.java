@@ -142,8 +142,8 @@ public class MainWindowController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/Jobs.fxml"));
-            JobsController muncipalityController = new JobsController();
-            loader.setController(muncipalityController);
+            JobsController JobsController = new JobsController(user);
+            loader.setController(JobsController);
             root = loader.load();
             stage.setTitle("");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));

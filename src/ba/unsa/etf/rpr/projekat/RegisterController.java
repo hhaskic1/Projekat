@@ -43,10 +43,11 @@ public class RegisterController {
                 MainWindowController muncipalityController = new MainWindowController(user);
                 loader.setController(muncipalityController);
                 root = loader.load();
-                stage.setTitle("");
+                stage.setTitle("Main Window");
                 stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
                 //stage.setResizable(false);
                 stage.show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

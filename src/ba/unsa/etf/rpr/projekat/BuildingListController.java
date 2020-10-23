@@ -80,7 +80,10 @@ public class BuildingListController {
             stage.show();
 
             stage.setOnHiding(windowEvent -> {
-                buildingObservableList.setAll(dao.getAllBuildings());
+                if(user.getType() == TypeOfUser.ADMINISTRATOR)
+                    buildingObservableList.setAll(dao.getAllBuildings());
+                else
+                    buildingObservableList.setAll(dao.getAllBuildingsFromUser(user));
                 buidlingList.setItems(buildingObservableList);
             });
 
@@ -112,7 +115,10 @@ public void changeBuilding(){
         stage.show();
 
         stage.setOnHiding(windowEvent -> {
-            buildingObservableList.setAll(dao.getAllBuildings());
+            if(user.getType() == TypeOfUser.ADMINISTRATOR)
+                buildingObservableList.setAll(dao.getAllBuildings());
+            else
+                buildingObservableList.setAll(dao.getAllBuildingsFromUser(user));
             buidlingList.setItems(buildingObservableList);
         });
 
@@ -127,7 +133,7 @@ public void details(){
 
         if(user.getType() == TypeOfUser.ADMINISTRATOR) new Report().showReport(dao.getConnection(),"/reports/GetAllBuilding.jrxml");
         else if(user.getType() == TypeOfUser.USER)
-        new Report().showReport(dao.getConnection(),"/reports/buildingReport.jrxml", user.getId());
+        new Report().showReport(dao.getConnection(),"/reports/buildingReport.jrxml", user.getId(),"user_id");
     } catch (JRException e1) {
         e1.printStackTrace();
     }
