@@ -13,6 +13,7 @@ public class AddBuildingController {
     public TextField garage;
     public Button buttonSave;
     public Label labela;
+    public Label labelMunciplaity;
 
     public RadioButton newbuilding;
     public RadioButton oldBuilding;
@@ -108,6 +109,11 @@ public class AddBuildingController {
         }
 
         if(user.getType() == TypeOfUser.ADMINISTRATOR) combo.setDisable(false);
+        if(user.getType() == TypeOfUser.USER) {
+            combo.setVisible(false);
+            labelMunciplaity.setVisible(false);
+        }
+
 
 
         if(updateState) combo.setDisable(true);
