@@ -92,6 +92,9 @@ public class JobsController {
             int a = dao.getIdMunicipalityFromUser_Municipality(user);
             int b = dao.getIdMunicipalityFromBuilding_Municipality(building);
 
+            if(user.getType() == TypeOfUser.ADMINISTRATOR)  new Report().showReport(dao.getConnection(),"/reports/jobReport.jrxml",building.getId(),"buildingID");
+
+
             if(a != b  || a == -1 || b == -1) {
                 labelError.setVisible(true);
                 adressID.getStyleClass().add("poljeNijeIspravno");
