@@ -25,7 +25,7 @@
       <Button fx:id="userButton" minWidth="100.0" mnemonicParsing="false" onAction="#userAction" text="Users" GridPane.rowIndex="2" />
       <Button fx:id="buildingButton" minWidth="100.0" mnemonicParsing="false" onAction="#buildingAction" text="Buildings" GridPane.rowIndex="3" />
       <Label text="Choose where to go :" />
-      <Button minWidth="100.0" mnemonicParsing="false" text="EXIT" GridPane.rowIndex="6" />
+      <Button fx:id="buttonExit" minWidth="100.0" mnemonicParsing="false" onAction="#buttonExit" text="EXIT" GridPane.rowIndex="6" />
       <Button fx:id="idJobs" minWidth="100.0" mnemonicParsing="false" onAction="#idJobs" text="Jobs" GridPane.rowIndex="4" />
       <Button fx:id="updateProfile" mnemonicParsing="false" onAction="#updateProfile" text="Update Profile" GridPane.rowIndex="5" />
    </children>

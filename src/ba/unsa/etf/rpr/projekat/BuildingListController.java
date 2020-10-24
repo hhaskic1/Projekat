@@ -39,10 +39,7 @@ public class BuildingListController {
     private BuildingManagementDAO dao;
     private User user;
 
-    public BuildingListController(ArrayList<Building> buildings) {
-        dao = BuildingManagementDAO.getInstance();
-        buildingObservableList= FXCollections.observableArrayList(buildings);
-    }
+
 
     public BuildingListController(ArrayList<Building> buildings,User user) {
         dao = BuildingManagementDAO.getInstance();

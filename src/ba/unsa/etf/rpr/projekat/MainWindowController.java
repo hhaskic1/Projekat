@@ -20,6 +20,7 @@ public class MainWindowController {
     public Button userButton;
     public Button MuncipalityButton;
     public Button updateProfile;
+    public Button buttonExit;
 
     public Button idJobs;
 
@@ -156,5 +157,12 @@ public class MainWindowController {
         }
     }
 
+
+    public void buttonExit(){
+
+        Stage stage=(Stage) buttonExit.getScene().getWindow();
+        stage.close();
+
+    }
 
 }

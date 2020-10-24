@@ -48,6 +48,12 @@ public class RegisterController {
                 //stage.setResizable(false);
                 stage.show();
 
+                Stage stage1 = (Stage) buttonLogIn.getScene().getWindow();
+                stage1.hide();
+
+                stage.setOnHiding(windowEvent -> {
+                    stage1.show();
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
