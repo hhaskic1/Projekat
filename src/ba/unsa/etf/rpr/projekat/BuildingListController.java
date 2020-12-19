@@ -27,6 +27,7 @@ public class BuildingListController {
     public Button deleteBuilding;
     public Button exit;
     public Button details;
+    public Button buttonBack;
 
     public TableView<Building> buidlingList;
     public TableColumn<Building,Integer> id;
@@ -39,9 +40,13 @@ public class BuildingListController {
     private BuildingManagementDAO dao;
     private User user;
 
+    private Boolean isBack = false;
 
+    public Boolean getBack() {
+        return isBack;
+    }
 
-    public BuildingListController(ArrayList<Building> buildings,User user) {
+    public BuildingListController(ArrayList<Building> buildings, User user) {
         dao = BuildingManagementDAO.getInstance();
         this.user = user;
         buildingObservableList= FXCollections.observableArrayList(buildings);
@@ -96,44 +101,55 @@ public class BuildingListController {
         buildingObservableList.setAll(dao.getAllBuildings());
     }
 
-public void changeBuilding(){
-        Building building = buidlingList.getSelectionModel().getSelectedItem();
-    try {
-        Stage stage = new Stage();
-        Parent root;
-        FXMLLoader loader = null;
-        loader = new FXMLLoader(getClass().getResource("/fxml/AddBuilding.fxml"));
-        AddBuildingController muncipalityController = new AddBuildingController(building,user,true);
-        loader.setController(muncipalityController);
-        root = loader.load();
-        stage.setTitle("");
-        stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-        //stage.setResizable(false);
-        stage.show();
+    public void changeBuilding(){
+            Building building = buidlingList.getSelectionModel().getSelectedItem();
+        try {
+            Stage stage = new Stage();
+            Parent root;
+            FXMLLoader loader = null;
+            loader = new FXMLLoader(getClass().getResource("/fxml/AddBuilding.fxml"));
+            AddBuildingController muncipalityController = new AddBuildingController(building,user,true);
+            loader.setController(muncipalityController);
+            root = loader.load();
+            stage.setTitle("");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            //stage.setResizable(false);
+            stage.show();
 
-        stage.setOnHiding(windowEvent -> {
-            if(user.getType() == TypeOfUser.ADMINISTRATOR)
-                buildingObservableList.setAll(dao.getAllBuildings());
-            else
-                buildingObservableList.setAll(dao.getAllBuildingsFromUser(user));
-            buidlingList.setItems(buildingObservableList);
-        });
+            stage.setOnHiding(windowEvent -> {
+                if(user.getType() == TypeOfUser.ADMINISTRATOR)
+                    buildingObservableList.setAll(dao.getAllBuildings());
+                else
+                    buildingObservableList.setAll(dao.getAllBuildingsFromUser(user));
+                buidlingList.setItems(buildingObservableList);
+            });
 
 
-    }catch (IOException e){
-        e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
-}
 
-public void details(){
-    try {
+    public void details(){
+        try {
 
-        if(user.getType() == TypeOfUser.ADMINISTRATOR) new Report().showReport(dao.getConnection(),"/reports/GetAllBuilding.jrxml");
-        else if(user.getType() == TypeOfUser.USER)
-        new Report().showReport(dao.getConnection(),"/reports/buildingReport.jrxml", user.getId(),"user_id");
-    } catch (JRException e1) {
-        e1.printStackTrace();
+            if(user.getType() == TypeOfUser.ADMINISTRATOR) new Report().showReport(dao.getConnection(),"/reports/GetAllBuilding.jrxml");
+            else if(user.getType() == TypeOfUser.USER)
+            new Report().showReport(dao.getConnection(),"/reports/buildingReport.jrxml", user.getId(),"user_id");
+        } catch (JRException e1) {
+            e1.printStackTrace();
+        }
     }
-}
+
+    public void ActionButtonBack(){
+        isBack = true;
+
+        Stage stage=(Stage) buttonBack.getScene().getWindow();
+        stage.close();
+    }
+
+    public void exitAction(){
+        System.exit(0);
+    }
 
 }

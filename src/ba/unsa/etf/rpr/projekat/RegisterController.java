@@ -52,7 +52,8 @@ public class RegisterController {
                 stage1.hide();
 
                 stage.setOnHiding(windowEvent -> {
-                    stage1.show();
+                    if(muncipalityController.getExit())
+                        stage1.show();
                 });
             } catch (IOException e) {
                 e.printStackTrace();
