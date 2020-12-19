@@ -27,6 +27,7 @@ public class MainWindowController {
     private BuildingManagementDAO dao;
     private User user;
     private Boolean muncipalityState = false;
+    private Boolean isExit = false;
 
     public MainWindowController() {
         dao=BuildingManagementDAO.getInstance();
@@ -34,6 +35,10 @@ public class MainWindowController {
     public MainWindowController(User user) {
         dao=BuildingManagementDAO.getInstance();
         this.user = user;
+    }
+
+    public Boolean getExit() {
+        return isExit;
     }
 
     @FXML
@@ -68,6 +73,14 @@ public class MainWindowController {
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) MuncipalityButton.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                stage1.show();
+            });
+
 
         }catch (IOException e){
             e.printStackTrace();
@@ -87,6 +100,16 @@ public class MainWindowController {
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
+
+
+            Stage stage1 = (Stage) userButton.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+            });
+
 
 
         }catch (IOException e){
@@ -131,6 +154,14 @@ public class MainWindowController {
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) buildingButton.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+            });
+
 
         }catch (IOException e){
             e.printStackTrace();
@@ -159,6 +190,8 @@ public class MainWindowController {
 
 
     public void buttonExit(){
+
+        isExit = true;
 
         Stage stage=(Stage) buttonExit.getScene().getWindow();
         stage.close();

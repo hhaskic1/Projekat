@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -25,7 +25,7 @@
       <Button fx:id="userButton" minWidth="100.0" mnemonicParsing="false" onAction="#userAction" text="Users" GridPane.rowIndex="2" />
       <Button fx:id="buildingButton" minWidth="100.0" mnemonicParsing="false" onAction="#buildingAction" text="Buildings" GridPane.rowIndex="3" />
       <Label text="Choose where to go :" />
-      <Button fx:id="buttonExit" minWidth="100.0" mnemonicParsing="false" onAction="#buttonExit" text="EXIT" GridPane.rowIndex="6" />
+      <Button fx:id="buttonExit" minWidth="100.0" mnemonicParsing="false" onAction="#buttonExit" text="Back" GridPane.rowIndex="6" />
       <Button fx:id="idJobs" minWidth="100.0" mnemonicParsing="false" onAction="#idJobs" text="Jobs" GridPane.rowIndex="4" />
       <Button fx:id="updateProfile" mnemonicParsing="false" onAction="#updateProfile" text="Update Profile" GridPane.rowIndex="5" />
    </children>

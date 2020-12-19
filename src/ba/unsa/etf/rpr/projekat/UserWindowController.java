@@ -25,6 +25,9 @@ public class UserWindowController {
     public Button deleteUser;
     public Button details;
     public Button buttonExit;
+    public Button buttonBack;
+
+    private Boolean isBack = false;
 
     public TableView<User> tableView;
     public TableColumn<User,String> firstname;
@@ -39,6 +42,10 @@ public class UserWindowController {
     public UserWindowController(ArrayList<User> user) {
         userObservableList= FXCollections.observableArrayList(user);
         dao=BuildingManagementDAO.getInstance();
+    }
+
+    public Boolean getBack() {
+        return isBack;
     }
 
     @FXML
@@ -108,8 +115,7 @@ public class UserWindowController {
     }
 
     public void exitAction(){
-        Stage stage= (Stage) buttonExit.getScene().getWindow();
-        stage.close();
+        System.exit(0);
     }
 
     public void detailsAction(){
@@ -118,6 +124,12 @@ public class UserWindowController {
         } catch (JRException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public void ActionButtonBack(){
+        isBack = true;
+        Stage stage=(Stage) buttonBack.getScene().getWindow();
+        stage.close();
     }
 
 }

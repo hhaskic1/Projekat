@@ -27,6 +27,7 @@ public class AddUserController {
     public Button save;
     public Button exit;
 
+
     private BuildingManagementDAO dao;
     private User user=null;
     private Boolean changeProfile = false;

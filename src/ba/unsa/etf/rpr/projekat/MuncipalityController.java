@@ -30,12 +30,16 @@ public class MuncipalityController {
     public Button buttonDelete;
     public Button buttonDetails;
     public Button buttonExit;
+    public Button buttonBack;
+
+
 
 
     private ObservableList<Municipality> buildingObservableList;
 
     private BuildingManagementDAO dao;
     private User user;
+    private Boolean isBack = false;
 
     public MuncipalityController(ArrayList<Municipality> buildings) {
         buildingObservableList= FXCollections.observableArrayList(buildings);
@@ -49,6 +53,10 @@ public class MuncipalityController {
     }
 
     public MuncipalityController(){}
+
+    public Boolean getBack() {
+        return isBack;
+    }
 
     @FXML
     public void initialize(){
@@ -129,5 +137,15 @@ public class MuncipalityController {
         }
     }
 
+    public void ActionButtonBack(){
+        isBack = true;
+
+        Stage stage = (Stage) buttonAdd.getScene().getWindow();
+        stage.close();
+    }
+
+    public void exitAction(){
+        System.exit(0);
+    }
 
 }
