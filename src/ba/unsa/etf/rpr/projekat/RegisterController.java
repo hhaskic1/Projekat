@@ -25,7 +25,6 @@ public class RegisterController {
     public Label labela=new Label();
 
 
-
     private BuildingManagementDAO dao;
 
     public RegisterController() {
@@ -110,9 +109,23 @@ public class RegisterController {
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
+
+
+            Stage stage1 = (Stage) register.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+            });
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
     }
 
 

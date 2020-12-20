@@ -22,6 +22,15 @@ public class JobsController {
     public Label labelError;
     public Button details;
 
+    public Button buttonBack;
+    public Button buttonExit;
+
+    private Boolean isBack = false;
+
+    public Boolean getBack() {
+        return isBack;
+    }
+
     public BuildingManagementDAO dao;
 
     public JobsController(User user) {
@@ -105,6 +114,18 @@ public class JobsController {
             e1.printStackTrace();
         }
     }
+
+    public void ActionButtonBack(){
+        isBack = true;
+
+        Stage stage=(Stage) buttonBack.getScene().getWindow();
+        stage.close();
+    }
+
+    public void exitAction(){
+        System.exit(0);
+    }
+
 
 
 }

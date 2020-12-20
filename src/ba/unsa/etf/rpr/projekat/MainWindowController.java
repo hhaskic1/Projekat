@@ -131,6 +131,14 @@ public class MainWindowController {
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) updateProfile.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+            });
+
 
         }catch (IOException e){
             e.printStackTrace();
@@ -182,6 +190,14 @@ public class MainWindowController {
             //stage.setResizable(false);
             stage.show();
 
+
+            Stage stage1 = (Stage) idJobs.getScene().getWindow();
+            stage1.hide();
+
+            stage.setOnHiding(windowEvent -> {
+                if(JobsController.getBack())
+                    stage1.show();
+            });
 
         }catch (IOException e){
             e.printStackTrace();

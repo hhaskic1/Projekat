@@ -15,5 +15,7 @@
     <orderEntry type="library" name="net.sf.jasperreports:jasperreports:6.15.0" level="project" />
     <orderEntry type="library" name="lib1" level="project" />
     <orderEntry type="library" name="org.testfx:testfx-junit5:4.0.15-alpha" level="project" />
+    <orderEntry type="library" name="org.testfx:testfx-junit5:4.0.15-alpha1" level="project" />
+    <orderEntry type="library" name="lib2" level="project" />
   </component>
 </module>

@@ -27,6 +27,12 @@ public class AddUserController {
     public Button save;
     public Button exit;
 
+    public Button buttonBack;
+    private Boolean isBack = false;
+
+    public Boolean getBack() {
+        return isBack;
+    }
 
     private BuildingManagementDAO dao;
     private User user=null;
@@ -168,7 +174,15 @@ public class AddUserController {
     }
 
     public void exitAction(){
-
+        System.exit(0);
     }
+
+    public void ActionButtonBack(){
+        isBack = true;
+
+        Stage stage=(Stage) buttonBack.getScene().getWindow();
+        stage.close();
+    }
+
 
 }
