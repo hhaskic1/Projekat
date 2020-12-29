@@ -6,9 +6,25 @@ public class Building {
 
     private int id;
     private String adress;
-    private String numberOfFlats;
+    private int numberOfFlats;
     private int garage;
     private ArrayList<Jobs> jobs = new ArrayList<>();
+    private int guestId;
+    private int numberOfFloors;
+    private int numberOfElevators;
+    private int yearOfBuilt;
+
+    public Building(int id, String adress, int numberOfFlats, int garage, int guestId, int numberOfFloors, int numberOfElevators, int yearOfBuilt, BuildingType type) {
+        this.id = id;
+        this.adress = adress;
+        this.numberOfFlats = numberOfFlats;
+        this.garage = garage;
+        this.guestId = guestId;
+        this.numberOfFloors = numberOfFloors;
+        this.numberOfElevators = numberOfElevators;
+        this.yearOfBuilt = yearOfBuilt;
+        this.type = type;
+    }
 
     public int getGarage() {
         return garage;
@@ -41,7 +57,7 @@ public class Building {
         this.type = type;
     }
 
-    public Building(int id, String adress, String numberOfFlats) {
+    public Building(int id, String adress, int numberOfFlats) {
         this.id = id;
         this.adress = adress;
         this.numberOfFlats = numberOfFlats;
@@ -63,11 +79,11 @@ public class Building {
         this.adress = adress;
     }
 
-    public String getNumberOfFlats() {
+    public int getNumberOfFlats() {
         return numberOfFlats;
     }
 
-    public void setNumberOfFlats(String numberOfFlats) {
+    public void setNumberOfFlats(int numberOfFlats) {
         this.numberOfFlats = numberOfFlats;
     }
 
@@ -80,5 +96,38 @@ public class Building {
             return "Mall";
         }
     }
+
+    public int getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(int guestId) {
+        this.guestId = guestId;
+    }
+
+    public int getNumberOfFloors() {
+        return numberOfFloors;
+    }
+
+    public void setNumberOfFloors(int numberOfFloors) {
+        this.numberOfFloors = numberOfFloors;
+    }
+
+    public int getNumberOfElevators() {
+        return numberOfElevators;
+    }
+
+    public void setNumberOfElevators(int numberOfElevators) {
+        this.numberOfElevators = numberOfElevators;
+    }
+
+    public int getYearOfBuilt() {
+        return yearOfBuilt;
+    }
+
+    public void setYearOfBuilt(int yearOfBuilt) {
+        this.yearOfBuilt = yearOfBuilt;
+    }
+
 
 }

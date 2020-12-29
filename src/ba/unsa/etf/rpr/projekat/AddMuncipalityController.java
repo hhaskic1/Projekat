@@ -17,6 +17,7 @@ public class AddMuncipalityController {
     public Button add;
     public Button delete;
     public ListView<User> userListView;
+    public Button back;
 
 
     private BuildingManagementDAO dao;
@@ -24,6 +25,9 @@ public class AddMuncipalityController {
     private ObservableList<User> managerList;
     private Municipality municipality=null;
     private Boolean changes = false;
+    private Boolean isBack = false;
+
+    public Button buttonExit;
 
 
     //add
@@ -52,6 +56,10 @@ public class AddMuncipalityController {
         this.managerList = FXCollections.observableArrayList(managerList);
     }
 
+    public Boolean getBack() {
+        return isBack;
+    }
+
     public void actionSave(){
         if(dao.isThereMuncipality(nameID.getText()) && !changes){
             nameID.getStyleClass().add("poljeNijeIspravno");
@@ -66,9 +74,17 @@ public class AddMuncipalityController {
         if(municipality==null)
             dao.AddMuncipality(nameID.getText(),managerID.getSelectionModel().getSelectedItem());
         else {
-            dao.updateMuncipality(municipality.getIdMuncipality(),nameID.getText());
+            dao.updateMuncipality(municipality.getIdMuncipality(), nameID.getText());
         }
+
         Stage stage=(Stage) saveBack.getScene().getWindow();
+        stage.close();
+    }
+
+    public void actionBack(){
+        isBack = true;
+
+        Stage stage=(Stage) back.getScene().getWindow();
         stage.close();
     }
 
@@ -124,5 +140,8 @@ public class AddMuncipalityController {
         userListView.setItems(managerList);
     }
 
+    public void exitAction(){
+        System.exit(0);
+    }
 
 }

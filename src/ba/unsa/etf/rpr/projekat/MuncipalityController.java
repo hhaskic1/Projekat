@@ -52,7 +52,7 @@ public class MuncipalityController {
         this.user = user;
     }
 
-    public MuncipalityController(){}
+    public MuncipalityController(User user){}
 
     public Boolean getBack() {
         return isBack;
@@ -81,12 +81,18 @@ public class MuncipalityController {
             AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers());
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Add municipality");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) buttonAdd.getScene().getWindow();
+            stage1.hide();
+
             stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+
                 buildingObservableList.setAll(dao.getAllMuncipality());
                 TableView.setItems(buildingObservableList);
             });
@@ -105,6 +111,7 @@ public class MuncipalityController {
 
     public void changeAction(){
         Municipality municipality=TableView.getSelectionModel().getSelectedItem();
+        if(municipality == null)    return;
         try {
             Stage stage = new Stage();
             Parent root;
@@ -113,12 +120,17 @@ public class MuncipalityController {
             AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers(),municipality,dao.getAllManagersInMunicipality(municipality));
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Update municipality");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) buttonAdd.getScene().getWindow();
+            stage1.hide();
+
             stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
                 buildingObservableList.setAll(dao.getAllMuncipality());
                 TableView.setItems(buildingObservableList);
             });

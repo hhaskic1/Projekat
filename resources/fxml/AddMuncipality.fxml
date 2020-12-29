@@ -5,14 +5,14 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="177.0" />
-    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="297.0" minWidth="10.0" prefWidth="229.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="194.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="177.0" minWidth="10.0" prefWidth="177.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="297.0" minWidth="10.0" prefWidth="229.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="215.0" minWidth="10.0" prefWidth="194.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -20,12 +20,13 @@
       <Label text="Name of Muncipality :" />
       <Label text="Manger of Muncipality :" GridPane.rowIndex="1" />
       <TextField fx:id="nameID" maxWidth="180.0" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" />
-      <Button fx:id="saveBack" maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" onAction="#actionSave" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" text="Exit" GridPane.rowIndex="4" />
+      <Button fx:id="saveBack" maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" onAction="#actionSave" text="Save " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button fx:id="buttonExit" maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" onAction="#exitAction" text="Exit" GridPane.rowIndex="4" />
       <Label fx:id="labela" prefHeight="17.0" prefWidth="255.0" text="Please Choose Manager of Muncipality !" textFill="#f80101" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <ComboBox fx:id="managerID" maxWidth="180.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <ListView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <ListView fx:id="userListView" maxHeight="200.0" maxWidth="200.0" prefHeight="80.0" prefWidth="228.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Button fx:id="add" maxWidth="100.0" mnemonicParsing="false" onAction="#addAction" text="Add" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <Button fx:id="delete" maxWidth="100.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Button fx:id="back" maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" onAction="#actionBack" text="Back" GridPane.columnIndex="2" GridPane.rowIndex="4" />
    </children>
 </GridPane>

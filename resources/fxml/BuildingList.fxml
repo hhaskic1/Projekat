@@ -3,10 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="529.0" minWidth="10.0" prefWidth="345.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="255.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="672.0" minWidth="10.0" prefWidth="672.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="270.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="76.4" minHeight="10.0" prefHeight="66.4" vgrow="SOMETIMES" />
@@ -15,12 +15,17 @@
       <RowConstraints maxHeight="128.40000000000003" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="buidlingList" maxWidth="298.0" prefHeight="274.0" prefWidth="298.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <TableView fx:id="buidlingList" maxWidth="672.0" prefHeight="274.0" prefWidth="672.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <columns>
-          <TableColumn fx:id="id" prefWidth="75.0" text="Id" />
-          <TableColumn fx:id="adress" prefWidth="75.0" text="Adress" />
-            <TableColumn fx:id="flats" prefWidth="75.0" text="Flats" />
-            <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
+          <TableColumn fx:id="id" prefWidth="36.0" text="ID" />
+          <TableColumn fx:id="adress" prefWidth="90.0" text="Adress" />
+            <TableColumn fx:id="flats" prefWidth="37.0" text="Flats" />
+            <TableColumn fx:id="flors" prefWidth="39.0" text="Floors" />
+            <TableColumn fx:id="yearOfBuilt" prefWidth="84.0" text="Year of Built" />
+            <TableColumn fx:id="type" prefWidth="94.0" text="Type" />
+            <TableColumn fx:id="elevators" prefWidth="128.0" text="Number of Elevators" />
+            <TableColumn fx:id="garages" prefWidth="55.0" text="Garages" />
+            <TableColumn fx:id="headOfBulding" prefWidth="108.0" text="Head of Building" />
         </columns>
       </TableView>
       <VBox alignment="CENTER" prefHeight="274.0" prefWidth="208.0" spacing="36.0" GridPane.columnIndex="1" GridPane.rowIndex="1">

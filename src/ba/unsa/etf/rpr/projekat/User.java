@@ -102,4 +102,9 @@ public class User {
         return  first_name + " " +
                  last_name ;
     }
+
+    public boolean equals(User obj) {
+        if(this.getId() == obj.getId()) return true;
+        return false;
+    }
 }

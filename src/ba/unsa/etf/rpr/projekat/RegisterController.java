@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -28,7 +29,13 @@ public class RegisterController {
     private BuildingManagementDAO dao;
 
     public RegisterController() {
+
         dao=BuildingManagementDAO.getInstance();
+       /* try {
+            dao.vratiBazuNaDefault();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void actionLogIn(){

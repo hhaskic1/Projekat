@@ -29,18 +29,18 @@
       </TableView>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="35.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <children>
-            <Button fx:id="addUser" minWidth="100.0" mnemonicParsing="false" onAction="#addAction" text="Add User" />
-            <Button fx:id="changeUser" minWidth="100.0" mnemonicParsing="false" onAction="#changeUser" text="Change User" />
-            <Button fx:id="deleteUser" minWidth="100.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete User" />
-            <Button fx:id="details" minWidth="100.0" mnemonicParsing="false" onAction="#detailsAction" text="Details" />
+            <Button fx:id="addUser" mnemonicParsing="false" onAction="#addAction" prefWidth="150.0" text="Add User" />
+            <Button fx:id="changeUser" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeUser" prefWidth="150.0" text="Change User" />
+            <Button fx:id="deleteUser" mnemonicParsing="false" onAction="#deleteAction" prefWidth="150.0" text="Delete User" />
+            <Button fx:id="details" mnemonicParsing="false" onAction="#detailsAction" prefWidth="150.0" text="Details" />
          </children>
       </VBox>
       <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="84.0" prefWidth="288.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <buttons>
-            <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#exitAction" prefHeight="30.0" prefWidth="139.0" text="EXIT" />
-            <Button fx:id="buttonBack" minWidth="50.0" mnemonicParsing="false" onAction="#ActionButtonBack" prefHeight="30.0" prefWidth="138.0" text="Back" />
+            <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#exitAction" prefHeight="30.0" prefWidth="150.0" text="EXIT" />
+            <Button fx:id="buttonBack" minWidth="50.0" mnemonicParsing="false" onAction="#ActionButtonBack" prefHeight="30.0" prefWidth="150.0" text="Back" />
          </buttons>
       </ButtonBar>
-      <Label text="Welcome to list of USERS:" GridPane.halignment="CENTER" />
+      <Label alignment="CENTER" text="Welcome to list of users:" GridPane.halignment="LEFT" />
    </children>
 </GridPane>

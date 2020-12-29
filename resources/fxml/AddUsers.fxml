@@ -31,7 +31,7 @@
       <Label text="Phone:" GridPane.rowIndex="3" />
       <Label text="E-mail:" GridPane.rowIndex="4" />
       <Label text="Adress:" GridPane.rowIndex="5" />
-      <Button fx:id="save" mnemonicParsing="false" onAction="#saveAction" text="Save and Back" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <Button fx:id="save" mnemonicParsing="false" onAction="#saveAction" prefWidth="150.0" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="12" />
       <TextField fx:id="firstname" maxWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="lastname" maxWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="phone" maxWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -53,12 +53,12 @@
       <Label text="Type of user:" GridPane.rowIndex="10" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="12">
          <children>
-            <Button fx:id="exit" mnemonicParsing="false" onAction="#exitAction" text="EXIT">
+            <Button fx:id="exit" mnemonicParsing="false" onAction="#exitAction" prefWidth="100.0" text="EXIT">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#ActionButtonBack" text="Back" />
+            <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#ActionButtonBack" prefWidth="100.0" text="Back" />
          </children>
          <GridPane.margin>
             <Insets />

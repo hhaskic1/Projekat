@@ -1,8 +1,11 @@
 package ba.unsa.etf.rpr.projekat;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BuildingManagementDAO {
 
@@ -13,16 +16,34 @@ public class BuildingManagementDAO {
     private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
     private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
     private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
-    private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser;
+    private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser,getAllBuildingsBYGuest;
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
     private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2;
     private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser, addUserToMunicipality, deleteUserFromMunicipality, isThereUserInMunicipality;
-    private PreparedStatement deleteUserFromMunicipality2,getIdMunicipalityFromUser_Municipality,getIdMunicipalityFromBuilding_Municipality;
+    private PreparedStatement deleteUserFromMunicipality2,getIdMunicipalityFromUser_Municipality,getIdMunicipalityFromBuilding_Municipality,getAllGuests;
 
     private BuildingManagementDAO(){
         try{
-
             conn= DriverManager.getConnection("jdbc:sqlite:baza.db");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        try{
+            getBuildingByUser=conn.prepareStatement("select * from Building where id=?");
+        }catch (SQLException e){
+            regenerisiBazu();
+            try{
+                getBuildingByUser=conn.prepareStatement("select * from Building where id=?");
+            }catch (SQLException e1){
+                e1.printStackTrace();
+            }
+
+        }
+
+        try{
+
+
 
             getBuildingByUser=conn.prepareStatement("select * from Building where id=?");
             getUserIdByParameters=conn.prepareStatement("select id from User where username=? and password=? ");
@@ -46,12 +67,12 @@ public class BuildingManagementDAO {
             updateUser=conn.prepareStatement("UPDATE User set first_name=?,last_name=?,phone_number=?,email=?,adress=?,username=?,password=?, type=? where id=?");
             deleteUser=conn.prepareStatement("DELETE from User where id=?");
             getAllBuildings=conn.prepareStatement("select * from Building");
-            addBuilding=conn.prepareStatement("INSERT into Building values(?,?,?,?,?)");
+            addBuilding=conn.prepareStatement("INSERT into Building values(?,?,?,?,?,?,?,?,?)");
             getNextBuilding=conn.prepareStatement("select Max(id)+1 from Building");
             updateUserMuncipality= conn.prepareStatement("update User_Muncipality set idUser = ? where idMuncipality = ?");
             deleteUserMuncipality =conn.prepareStatement("delete from User_Muncipality where idMuncipality = ?");
             deleteBuilding=conn.prepareStatement("delete from Building where id=?");
-            updateBuilding=conn.prepareStatement("UPDATE Building set adress=?,numberOfFlats=?,type=?,garage=? where id=?");
+            updateBuilding=conn.prepareStatement("UPDATE Building set adress=?,numberOfFlats=?,type=?,garage=?, numberOfElevators=?, numberOfFloors=?,yearOfBuilt=?,guest_id=? where id=?");
             getBuildingByAdress=conn.prepareStatement("SELECT * from Building where adress=?");
             getNextJobId=conn.prepareStatement("select Max (id)+1 from Jobs");
             addJob=conn.prepareStatement("insert into Jobs values (?,?,?,?,?)");
@@ -71,18 +92,62 @@ public class BuildingManagementDAO {
             deleteMuncipalityBuilding = conn.prepareStatement("delete from Building_Muncipality where id1 = ?");
             deleteBuildingMuncipality = conn.prepareStatement("delete from Building_Muncipality where id2 = ?");
             getMuncipalityFromBM = conn.prepareStatement("select Municipality.id, Municipality.name, Municipality.numberBuildings from Municipality, Building_Muncipality where Building_Muncipality.id2 = Municipality.id and Building_Muncipality.id1 = ?");
-            getAllBuildingsFromUser = conn.prepareStatement("select Building.id, Building.adress, Building.numberOfFlats, Building.type, Building.garage from Building, User_Muncipality,Building_Muncipality,User where User_Muncipality.idUser = User.id and User_Muncipality.idMuncipality = Building_Muncipality.id2 and Building_Muncipality.id1 = Building.id and User.id = ?");
+            getAllBuildingsFromUser = conn.prepareStatement("select Building.id, Building.adress, Building.numberOfFlats, Building.type, Building.garage,Building.numberOfElevators,Building.numberOfFloors, Building.yearOfBuilt, Building.guest_id from Building, User_Muncipality,Building_Muncipality,User where User_Muncipality.idUser = User.id and User_Muncipality.idMuncipality = Building_Muncipality.id2 and Building_Muncipality.id1 = Building.id and User.id = ?");
             addUserToMunicipality = conn.prepareStatement("insert into User_Muncipality values (?,?)");
             deleteUserFromMunicipality = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality != ?");
             deleteUserFromMunicipality2 = conn.prepareStatement("delete from User_Muncipality where idUser = ? and idMuncipality = ?");
             isThereUserInMunicipality = conn.prepareStatement("select  * from User_Muncipality where idUser = ?");
             getIdMunicipalityFromUser_Municipality = conn.prepareStatement("select idMuncipality from User_Muncipality where idUser=?");
             getIdMunicipalityFromBuilding_Municipality = conn.prepareStatement("select id2 from Building_Muncipality where id1=?");
+            getAllGuests = conn.prepareStatement("select * from User where type = 3");
+            getAllBuildingsBYGuest = conn.prepareStatement("select * from Building where guest_id = ?");
 
         }catch(SQLException e){
             e.printStackTrace();
         }
     }
+    private void regenerisiBazu() {
+        Scanner ulaz = null;
+        try {
+            ulaz = new Scanner(new FileInputStream("baza.db.sql"));
+            String sqlUpit = "";
+            while (ulaz.hasNext()) {
+                sqlUpit += ulaz.nextLine();
+                if ( sqlUpit.charAt( sqlUpit.length()-1 ) == ';') {
+                    try {
+                        Statement stmt = conn.createStatement();
+                        stmt.execute(sqlUpit);
+                        sqlUpit = "";
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            ulaz.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Metoda za potrebe testova, vraća bazu podataka u polazno stanje
+    public void vratiBazuNaDefault() throws SQLException {
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("DELETE FROM User");
+        stmt.executeUpdate("DELETE FROM Municipality");
+        stmt.executeUpdate("DELETE FROM User_Muncipality");
+        stmt.executeUpdate("DELETE FROM Building_Muncipality");
+        stmt.executeUpdate("DELETE FROM Building");
+        stmt.executeUpdate("DELETE FROM Jobs");
+        stmt.executeUpdate("DELETE FROM Building_Jobs");
+
+
+
+        // Regeneriši bazu neće ponovo kreirati tabele jer u .sql datoteci stoji
+        // CREATE TABLE IF NOT EXISTS
+        // Ali će ponovo napuniti default podacima
+        regenerisiBazu();
+    }
+
 
 
     public Connection getConnection() {
@@ -92,6 +157,19 @@ public class BuildingManagementDAO {
     public static BuildingManagementDAO getInstance(){
         if(instance==null) instance=new BuildingManagementDAO();
         return instance;
+    }
+    public static void removeInstance() {
+        if (instance == null) return;
+        instance.close();
+        instance = null;
+    }
+
+    public void close() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Municipality> getBuildingsByUser(String username, String password) {
@@ -170,6 +248,24 @@ public class BuildingManagementDAO {
                 users.add(u);
             }
         return users;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<User> getAllGuests(){
+        try{
+            ArrayList<User>users=new ArrayList<>();
+            ResultSet rs=getAllGuests.executeQuery();
+            while(rs.next()){
+                User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                u.setId(rs.getInt(1));
+                u.setType(TypeOfUser.GUEST);
+
+                users.add(u);
+            }
+            return users;
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -473,7 +569,7 @@ public class BuildingManagementDAO {
             ResultSet rs=getAllBuildings.executeQuery();
             ArrayList<Building> buildings = new ArrayList<>();
             while(rs.next()){
-                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getInt(5),rs.getInt(9),rs.getInt(7),rs.getInt(6),rs.getInt(8),null);
                 if(rs.getInt(4) == 1)b.setType(BuildingType.NewBuilding);
                 else if(rs.getInt(4) == 2)b.setType(BuildingType.OldBuilding);
                 else b.setType(BuildingType.Mall);
@@ -497,9 +593,13 @@ public class BuildingManagementDAO {
 
             addBuilding.setInt(1,id);
             addBuilding.setString(2,building.getAdress());
-            addBuilding.setString(3,building.getNumberOfFlats());
+            addBuilding.setInt(3,building.getNumberOfFlats());
             addBuilding.setInt(4,building.getType().getLevel());
             addBuilding.setInt(5,building.getGarage());
+            addBuilding.setInt(6,building.getNumberOfElevators());
+            addBuilding.setInt(7,building.getNumberOfFloors());
+            addBuilding.setInt(8,building.getYearOfBuilt());
+            addBuilding.setInt(9,building.getGuestId());
 
             addBuilding.executeUpdate();
 
@@ -550,7 +650,7 @@ public class BuildingManagementDAO {
     public void updateBuilding(Building building){
         try {
             updateBuilding.setString(1,building.getAdress());
-            updateBuilding.setString(2,building.getNumberOfFlats());
+            updateBuilding.setInt(2,building.getNumberOfFlats());
 
                 if(building.getType()==BuildingType.Mall){
                     updateBuilding.setInt(3,3);
@@ -563,7 +663,12 @@ public class BuildingManagementDAO {
 
                 }
             updateBuilding.setInt(4,building.getGarage());
-            updateBuilding.setInt(5,building.getId());
+            updateBuilding.setInt(5,building.getNumberOfElevators());
+            updateBuilding.setInt(6,building.getNumberOfFloors());
+            updateBuilding.setInt(7,building.getYearOfBuilt());
+            updateBuilding.setInt(8,building.getGuestId());
+            updateBuilding.setInt(9,building.getId());
+
 
             updateBuilding.executeUpdate();
 
@@ -579,7 +684,7 @@ public class BuildingManagementDAO {
         try{
             getBuildingByAdress.setString(1,adress);
             ResultSet rs= getBuildingByAdress.executeQuery();
-            Building building=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+            Building building=new Building(rs.getInt(1),rs.getString(2),rs.getInt(3));
             building.setGarage(rs.getInt(5));
             if(rs.getInt(4)==1){
                 building.setType(BuildingType.NewBuilding);
@@ -688,7 +793,7 @@ public class BuildingManagementDAO {
             ResultSet rs=getAllBuildingsFromUser.executeQuery();
             ArrayList<Building> buildings = new ArrayList<>();
             while(rs.next()){
-                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getString(3));
+                Building b=new Building(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getInt(5),rs.getInt(9),rs.getInt(7),rs.getInt(6),rs.getInt(8),null);
                 if(rs.getInt(4) == 1)b.setType(BuildingType.NewBuilding);
                 else if(rs.getInt(4) == 2)b.setType(BuildingType.OldBuilding);
                 else b.setType(BuildingType.Mall);
@@ -801,4 +906,57 @@ public class BuildingManagementDAO {
             }
         }
 
+        public String  getNameOfUserById(int id){
+            try {
+                getUserById.setInt(1,id);
+                ResultSet rs=getUserById.executeQuery();
+                if(rs.next())
+                    return rs.getString(2) +" "+ rs.getString(3);
+                return "";
+            }catch (SQLException e){
+                e.printStackTrace();
+                return "";
+            }
+        }
+
+        public User getUserByID(int id){
+            try {
+                getUserById.setInt(1,id);
+                ResultSet rs=getUserById.executeQuery();
+                if(rs.next())
+                {
+                    User u = new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                    u.setId(id);
+                    if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+                    else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+                    else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+                    return u;
+                }
+                return null;
+            }catch (SQLException e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+        public ArrayList<Building> getAllBuildingsBYGuest(User user){
+            try {
+                getAllBuildingsBYGuest.setInt(1,user.getId());
+                ResultSet rs=getAllBuildingsBYGuest.executeQuery();
+                ArrayList<Building> buildings = new ArrayList<>();
+                while(rs.next()){
+                    Building b=new Building(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getInt(5),rs.getInt(9),rs.getInt(7),rs.getInt(6),rs.getInt(8),null);
+                    if(rs.getInt(4) == 1)b.setType(BuildingType.NewBuilding);
+                    else if(rs.getInt(4) == 2)b.setType(BuildingType.OldBuilding);
+                    else b.setType(BuildingType.Mall);
+                    buildings.add(b);
+                }
+                return buildings;
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+        }
 }

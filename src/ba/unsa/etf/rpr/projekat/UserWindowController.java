@@ -68,12 +68,19 @@ public class UserWindowController {
             AddUserController muncipalityController = new AddUserController();
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Add user");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
 
+
+            Stage stage1 = (Stage) addUser.getScene().getWindow();
+            stage1.hide();
+
             stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+
                 userObservableList.setAll(dao.getAllUsers());
                 tableView.setItems(userObservableList);
             });
@@ -85,15 +92,17 @@ public class UserWindowController {
 
 
     public void changeUser(){
+        User u = tableView.getSelectionModel().getSelectedItem();
+        if(u == null)   return;
         try {
             Stage stage = new Stage();
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddUsers.fxml"));
-            AddUserController muncipalityController = new AddUserController(tableView.getSelectionModel().getSelectedItem());
+            AddUserController muncipalityController = new AddUserController(u);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Change user");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();

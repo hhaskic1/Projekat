@@ -33,6 +33,11 @@ public class BuildingListController {
     public TableColumn<Building,Integer> id;
     public TableColumn<Building,String> adress;
     public TableColumn<Building,Integer> flats;
+    public TableColumn<Building,Integer> flors;
+    public TableColumn<Building,Integer> yearOfBuilt;
+    public TableColumn<Building,Integer> garages;
+    public TableColumn<Building,Integer> elevators;
+    public TableColumn<Building,String> headOfBulding;
     public TableColumn<Building,String> type;
 
     private ObservableList<Building> buildingObservableList;
@@ -58,7 +63,12 @@ public class BuildingListController {
         id.setCellValueFactory(new PropertyValueFactory("id"));
         adress.setCellValueFactory(new PropertyValueFactory("adress"));
         flats.setCellValueFactory(new PropertyValueFactory("numberOfFlats"));
+        flors.setCellValueFactory(new PropertyValueFactory("numberOfFloors"));
+        elevators.setCellValueFactory(new PropertyValueFactory("numberOfElevators"));
+        yearOfBuilt.setCellValueFactory(new PropertyValueFactory("yearOfBuilt"));
+        headOfBulding.setCellValueFactory(data->new SimpleStringProperty(dao.getNameOfUserById(data.getValue().getGuestId())));
         type.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getTypeByString()));
+        garages.setCellValueFactory(new PropertyValueFactory("garage"));
 
         //uslov za disable buttons kad je gost
         if(user.getType() == TypeOfUser.GUEST)  addBuilding.setDisable(true);
@@ -76,12 +86,18 @@ public class BuildingListController {
             AddBuildingController muncipalityController = new AddBuildingController(user);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Add building");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) addBuilding.getScene().getWindow();
+            stage1.hide();
+
             stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+
                 if(user.getType() == TypeOfUser.ADMINISTRATOR)
                     buildingObservableList.setAll(dao.getAllBuildings());
                 else
@@ -103,6 +119,7 @@ public class BuildingListController {
 
     public void changeBuilding(){
             Building building = buidlingList.getSelectionModel().getSelectedItem();
+            if(building == null)    return;
         try {
             Stage stage = new Stage();
             Parent root;
@@ -111,12 +128,19 @@ public class BuildingListController {
             AddBuildingController muncipalityController = new AddBuildingController(building,user,true);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Change building");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
 
+            Stage stage1 = (Stage) addBuilding.getScene().getWindow();
+            stage1.hide();
+
+
             stage.setOnHiding(windowEvent -> {
+                if(muncipalityController.getBack())
+                    stage1.show();
+
                 if(user.getType() == TypeOfUser.ADMINISTRATOR)
                     buildingObservableList.setAll(dao.getAllBuildings());
                 else

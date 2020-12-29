@@ -68,7 +68,7 @@ public class MainWindowController {
             MuncipalityController muncipalityController = new MuncipalityController(dao.getAllMuncipality(),user);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Municipality list");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
@@ -96,7 +96,7 @@ public class MainWindowController {
             UserWindowController muncipalityController = new UserWindowController(dao.getAllUsers());
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("List of users");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
@@ -148,6 +148,7 @@ public class MainWindowController {
     public void buildingAction(){
         ArrayList<Building> buildings = new ArrayList<>();
         if(user.getType() == TypeOfUser.USER) buildings = dao.getAllBuildingsFromUser(user);
+        else if(user.getType() == TypeOfUser.GUEST) buildings = dao.getAllBuildingsBYGuest(user);
                 else buildings = dao.getAllBuildings();
         try {
             Stage stage = new Stage();
@@ -157,9 +158,9 @@ public class MainWindowController {
             BuildingListController muncipalityController = new BuildingListController(buildings,user);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("List of buildings");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            //stage.setResizable(false);
+            stage.setResizable(true);
             stage.show();
 
             Stage stage1 = (Stage) buildingButton.getScene().getWindow();

@@ -17,9 +17,9 @@
    <children>
       <TableView fx:id="TableView" prefHeight="263.0" prefWidth="327.0" GridPane.rowIndex="1">
         <columns>
-          <TableColumn fx:id="columName" prefWidth="75.0" text="Naziv" />
-          <TableColumn fx:id="columnid" prefWidth="75.0" text="id" />
-            <TableColumn fx:id="columnBuildings" prefWidth="75.0" text="zgrade" />
+          <TableColumn fx:id="columnid" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="columName" prefWidth="102.0" text="Name" />
+            <TableColumn fx:id="columnBuildings" prefWidth="163.0" text="Number of buildings" />
         </columns>
          <GridPane.margin>
             <Insets left="10.0" />

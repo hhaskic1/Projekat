@@ -85,12 +85,26 @@ class MainWindowsControllerTest {
         assertEquals(true,stage.isShowing());
 
 
+        Button btn5 = robot.lookup("#idJobs").queryAs(Button.class);
+        Stage stage5 = (Stage) btn5.getScene().getWindow();
+        robot.clickOn("#idJobs");
+        assertEquals(false,stage5.isShowing());
+
+        robot.clickOn("#buttonBack");
+        assertEquals(true,stage.isShowing());
+
+
+        Button btn6 = robot.lookup("#updateProfile").queryAs(Button.class);
+        Stage stage6 = (Stage) btn6.getScene().getWindow();
+        robot.clickOn("#updateProfile");
+        assertEquals(false,stage6.isShowing());
+
+        robot.clickOn("#buttonBack");
+        assertEquals(true,stage.isShowing());
+
+        robot.clickOn("#buttonExit");
+        assertEquals(false,stage.isShowing());
 
     }
-
-
-
-
-
 
 }

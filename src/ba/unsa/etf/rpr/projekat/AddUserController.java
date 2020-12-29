@@ -169,6 +169,8 @@ public class AddUserController {
             dao.updateUser(user);
 
         }
+
+        isBack = true;
         Stage stage=(Stage) save.getScene().getWindow();
         stage.close();
     }
