@@ -12,7 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.Date;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -24,6 +27,8 @@ public class RegisterController {
     public Button buttonExit;
     public Button register;
     public Label labela=new Label();
+    public Label timetime=new Label();
+
 
 
     private BuildingManagementDAO dao;
@@ -94,6 +99,24 @@ public class RegisterController {
     public void initialize(){
         dao=BuildingManagementDAO.getInstance();
         labela.setVisible(false);
+
+        try
+        {
+
+            URL url = new URL("http://www.google.com");
+            HttpURLConnection httpCon =
+                    (HttpURLConnection) url.openConnection();
+            long date = httpCon.getDate();
+            timetime.setText(timetime.getText()+": "+String.valueOf(new Date(date)));
+           // timetime.getText()
+            /*if (date == 0)
+                System.out.println("No date information.");
+            else
+                System.out.println("Date: " + new Date(date));*/
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 

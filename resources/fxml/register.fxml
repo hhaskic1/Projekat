@@ -29,6 +29,7 @@
             <Button fx:id="register" minWidth="100.0" mnemonicParsing="false" onAction="#register" prefWidth="150.0" text="Register" />
          </children>
       </VBox>
+      <Label fx:id="timetime" text="Current time: " GridPane.columnIndex="1" />
 
    </children>
 </GridPane>
