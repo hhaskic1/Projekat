@@ -57,4 +57,12 @@ public class Jobs {
     public void setContractor(String contractor) {
         this.contractor = contractor;
     }
+
+    @Override
+    public String toString() {
+        String s = "";
+        s += getName() + ": from " + getBeginingDate().toString();
+        if(getEndDate()!= null) s += " to " + getEndDate().toString();
+        return s;
+    }
 }

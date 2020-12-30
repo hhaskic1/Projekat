@@ -129,5 +129,13 @@ public class Building {
         this.yearOfBuilt = yearOfBuilt;
     }
 
+    @Override
+    public String toString() {
+        return getAdress();
+    }
 
+    public boolean equals(Building obj) {
+        if(this.getId() == obj.getId() && obj != null)return true;
+        return false;
+    }
 }

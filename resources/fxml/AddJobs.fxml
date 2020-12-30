@@ -20,15 +20,16 @@
   </rowConstraints>
    <children>
       <Label text="Name of job :" GridPane.rowIndex="1" />
-      <Label text="Date of Job : " GridPane.rowIndex="2" />
+      <Label text="Date of Job(dd/mm/yyyy) : " GridPane.rowIndex="2" />
       <Label text="Job finished :" GridPane.rowIndex="4" />
       <Label text="Contractor :" GridPane.rowIndex="6" />
       <TextField fx:id="nameJobs" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="dateJob" maxWidth="200.0" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="jobFinish" maxWidth="200.0" stylesheets="@../CSS/WrongInput.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="contractor" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#buttonSave" text="Save and back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#buttonSave" prefWidth="150.0" text="Save " GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label fx:id="labela1" text="Invalid INPUT!" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label fx:id="labela2" text="Invalid INPUT" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Button fx:id="back" mnemonicParsing="false" onAction="#backAction" prefWidth="150.0" text="Back" GridPane.rowIndex="7" />
    </children>
 </GridPane>

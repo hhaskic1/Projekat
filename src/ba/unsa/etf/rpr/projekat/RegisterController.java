@@ -36,7 +36,7 @@ public class RegisterController {
     public RegisterController() {
 
         dao=BuildingManagementDAO.getInstance();
-       /* try {
+        /*try {
             dao.vratiBazuNaDefault();
         } catch (SQLException e) {
             e.printStackTrace();

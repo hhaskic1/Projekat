@@ -61,6 +61,8 @@ public class AddMuncipalityController {
     }
 
     public void actionSave(){
+        if(!changes)
+            return;
         if(dao.isThereMuncipality(nameID.getText()) && !changes){
             nameID.getStyleClass().add("poljeNijeIspravno");
             return;
@@ -76,6 +78,8 @@ public class AddMuncipalityController {
         else {
             dao.updateMuncipality(municipality.getIdMuncipality(), nameID.getText());
         }
+
+        isBack = true;
 
         Stage stage=(Stage) saveBack.getScene().getWindow();
         stage.close();
@@ -101,6 +105,7 @@ public class AddMuncipalityController {
         nameID.textProperty().addListener((o,oldvalue,newvalue)->{
 
             if(!oldvalue.contentEquals(newvalue)) {
+                changes=true;
                 nameID.getStyleClass().removeAll("poljeNijeIspravno");
             }
         });

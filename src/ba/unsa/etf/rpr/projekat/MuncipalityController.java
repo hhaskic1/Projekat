@@ -78,7 +78,7 @@ public class MuncipalityController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddMuncipality.fxml"));
-            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers());
+            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsersExeceptGuests());
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("Add municipality");
@@ -117,7 +117,7 @@ public class MuncipalityController {
             Parent root;
             FXMLLoader loader = null;
             loader = new FXMLLoader(getClass().getResource("/fxml/AddMuncipality.fxml"));
-            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsers(),municipality,dao.getAllManagersInMunicipality(municipality));
+            AddMuncipalityController muncipalityController = new AddMuncipalityController(dao.getAllUsersExeceptGuests(),municipality,dao.getAllManagersInMunicipality(municipality));
             loader.setController(muncipalityController);
             root = loader.load();
             stage.setTitle("Update municipality");

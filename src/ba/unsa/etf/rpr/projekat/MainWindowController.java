@@ -45,7 +45,7 @@ public class MainWindowController {
     public void initialize() {
 
         if(user.getType() == TypeOfUser.GUEST)  {
-            idJobs.setDisable(true);
+            //idJobs.setDisable(true);
             userButton.setDisable(true);
         }
 
@@ -126,7 +126,7 @@ public class MainWindowController {
             AddUserController muncipalityController = new AddUserController(user,true);
             loader.setController(muncipalityController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Update profile");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();
@@ -186,7 +186,7 @@ public class MainWindowController {
             JobsController JobsController = new JobsController(user);
             loader.setController(JobsController);
             root = loader.load();
-            stage.setTitle("");
+            stage.setTitle("Jobs");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             //stage.setResizable(false);
             stage.show();

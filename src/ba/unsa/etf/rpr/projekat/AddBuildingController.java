@@ -129,6 +129,7 @@ public class AddBuildingController {
         if(user.getType() == TypeOfUser.ADMINISTRATOR) combo.setDisable(false);
         if(user.getType() == TypeOfUser.USER) {
             combo.setVisible(false);
+            combo.getSelectionModel().select(dao.getMuncipalityForUser(user));
             labelMunciplaity.setVisible(false);
         }
 
@@ -150,14 +151,15 @@ public class AddBuildingController {
 
     public void actionSave(){
 
-        if(!updateState)
-        if((adress.getText() != "" || flats.getText() != "" || flors.getText() != "" || elevators.getText() != "" || yearOfBulit.getText() != "" || (!oldBuilding.isSelected() && !newbuilding.isSelected() && !mall.isSelected()) || combo.getSelectionModel().getSelectedItem() == null || comboHead.getSelectionModel().getSelectedItem() == null)){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Wrong data!!!");
-            alert.setContentText("Fields are not filled.");
-            alert.showAndWait();
-            return;
+        if(!updateState) {
+            if ((adress.getText() == "" || flats.getText() == "" || flors.getText() == "" || elevators.getText() == "" || yearOfBulit.getText() == "" || (!oldBuilding.isSelected() && !newbuilding.isSelected() && !mall.isSelected()) || combo.getSelectionModel().getSelectedItem() == null || comboHead.getSelectionModel().getSelectedItem() == null)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Wrong data!!!");
+                alert.setContentText("Fields are not filled.");
+                alert.showAndWait();
+                return;
+            }
         }
         if(buidling==null){
             if (dao.isThereBuildingOnThatAdress(adress.getText())) {

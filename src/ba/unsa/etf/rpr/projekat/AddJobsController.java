@@ -19,17 +19,22 @@ public class AddJobsController {
     public Button buttonSave;
     public Label labela1;
     public Label labela2;
+    public Button back;
 
     private DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     private Jobs jobs;
-
+    private Boolean isBack=false;
     private Building building;
     private BuildingManagementDAO dao;
 
     public AddJobsController(Building building) {
         this.building = building;
+    }
+
+    public Boolean getBack() {
+        return isBack;
     }
 
     @FXML
@@ -61,14 +66,22 @@ public class AddJobsController {
     }
 
     public void buttonSave(){
+        if(nameJobs.getText()=="" || dateJob.getText()=="" || contractor.getText()=="") return;
         try{
-               if(LocalDate.parse(dateJob.getText(),formatter).isAfter(LocalDate.parse(jobFinish.getText(),formatter))){
+               if(dateJob.getText()!="" && jobFinish.getText()!=""){
+                   if(LocalDate.parse(dateJob.getText(),formatter).isAfter(LocalDate.parse(jobFinish.getText(),formatter))){
                 dateJob.getStyleClass().add("poljeNijeIspravno");
                 jobFinish.getStyleClass().add("poljeNijeIspravno");
                 labela1.setVisible(true);
                 labela2.setVisible(true);
                 return;
-            }
+                   }
+            }else if(dateJob.getText()=="" && jobFinish.getText()==""){
+                   dateJob.getStyleClass().add("poljeNijeIspravno");
+                   jobFinish.getStyleClass().add("poljeNijeIspravno");
+                   labela1.setVisible(true);
+                   labela2.setVisible(true);
+               }
 
         }catch (DateTimeParseException e){
             dateJob.getStyleClass().add("poljeNijeIspravno");
@@ -77,16 +90,26 @@ public class AddJobsController {
             labela2.setVisible(true);
             return;
            }
-
+        if(dateJob.getText()!="" && jobFinish.getText()!="")
         jobs=new Jobs(dao.getNextJobId(),nameJobs.getText(),LocalDate.parse(dateJob.getText(),formatter),LocalDate.parse(jobFinish.getText(),formatter),contractor.getText() );
-
+        else if(dateJob.getText()!="" && jobFinish.getText()=="")
+            jobs=new Jobs(dao.getNextJobId(),nameJobs.getText(),LocalDate.parse(dateJob.getText(),formatter),null,contractor.getText() );
         building.addJob(jobs);
 
         dao.addJobsToBuilding(jobs,building);
 
+        isBack = true;
+
         Stage stage=(Stage) buttonSave.getScene().getWindow();
         stage.close();
 
+    }
+
+    public void backAction(){
+        isBack = true;
+
+        Stage stage=(Stage) back.getScene().getWindow();
+        stage.close();
     }
 
 

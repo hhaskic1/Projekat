@@ -4,6 +4,7 @@ package ba.unsa.etf.rpr.projekat;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,12 +14,12 @@ public class BuildingManagementDAO {
     private Connection conn=null;
 
     private PreparedStatement getBuildingByUser,getUserIdByParameters,getMuncipalitesByUserId,getBuildingsById,getBuildingsIdFromMuncipalites, getlAllMuncipalites;
-    private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser;
-    private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings;
-    private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding;
+    private PreparedStatement getAllUsers,addMuncipality,getNextMuncipalityID,deleteMuncipality,getUserFromMuncipality,getUserById,addMuncipalityAndUser,updateJob;
+    private PreparedStatement updateMuncipality,getMuncipalityByName,addUser,getNextUser,isThereUser,updateUser,deleteUser,getAllBuildings,getAllJobsForBuilding;
+    private PreparedStatement addBuilding,getNextBuilding, updateUserMuncipality, deleteUserMuncipality,deleteBuilding,updateBuilding,getAllUsersExeceptGuests;
     private PreparedStatement getBuildingByAdress,getNextJobId,addJobsToBuilding,addJob,isThereUserByParametersExceptUser,checkUser,getAllBuildingsBYGuest;
     private PreparedStatement isThereMuncipality,isThereBuildingOnThatAdress,isThereBuildingOnThatAdressUpdate, getUserByParameters, getMuncipalityForUser;
-    private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2;
+    private PreparedStatement addBuildingUser,updateMuncipalityBuilding,deleteMuncipalityBuilding,deleteBuildingMuncipality,updateMuncipality2,getJob;
     private PreparedStatement getMuncipalityFromBM, getAllBuildingsFromUser, addUserToMunicipality, deleteUserFromMunicipality, isThereUserInMunicipality;
     private PreparedStatement deleteUserFromMunicipality2,getIdMunicipalityFromUser_Municipality,getIdMunicipalityFromBuilding_Municipality,getAllGuests;
 
@@ -101,6 +102,10 @@ public class BuildingManagementDAO {
             getIdMunicipalityFromBuilding_Municipality = conn.prepareStatement("select id2 from Building_Muncipality where id1=?");
             getAllGuests = conn.prepareStatement("select * from User where type = 3");
             getAllBuildingsBYGuest = conn.prepareStatement("select * from Building where guest_id = ?");
+            getAllUsersExeceptGuests = conn.prepareStatement("select * from User where type != 3");
+            getAllJobsForBuilding = conn.prepareStatement("select job_id from Building_Jobs where buildingID = ?");
+            getJob = conn.prepareStatement("select * from Jobs where id=?");
+            updateJob = conn.prepareStatement("update Jobs set endDate = ? where id=?");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -254,6 +259,29 @@ public class BuildingManagementDAO {
             return null;
         }
     }
+    public ArrayList<User> getAllUsersExeceptGuests(){
+        try{
+            ArrayList<User>users=new ArrayList<>();
+            ResultSet rs=getAllUsersExeceptGuests.executeQuery();
+            while(rs.next()){
+                User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                u.setId(rs.getInt(1));
+
+                if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
+                else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
+                else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+
+                users.add(u);
+            }
+            return users;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public ArrayList<User> getAllGuests(){
         try{
             ArrayList<User>users=new ArrayList<>();
@@ -724,7 +752,9 @@ public class BuildingManagementDAO {
             addJob.setInt(1, jobs.getId());
             addJob.setString(2,jobs.getName());
             addJob.setString(3, String.valueOf(jobs.getBeginingDate()));
+            if(jobs.getEndDate() != null)
             addJob.setString(4, String.valueOf(jobs.getEndDate()));
+            else addJob.setString(4, "");
             addJob.setString(5,jobs.getContractor());
             addJob.executeUpdate();
 
@@ -815,14 +845,17 @@ public class BuildingManagementDAO {
                 getUserFromMuncipality.setInt(1,municipality.getIdMuncipality());
                 ResultSet rs2=getUserFromMuncipality.executeQuery();
                 while(rs2.next()){
-                    getUserById.setInt(1,rs2.getInt(1));
+                    User u = getUserByID(rs2.getInt(1));
+                    /*getUserById.setInt(1,rs2.getInt(1));
                     ResultSet rs = getUserById.executeQuery();
+                    /*
                     User u=new User(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
                     u.setId(rs.getInt(1));
 
+
                     if(rs.getInt(9) == 1)   u.setType(TypeOfUser.ADMINISTRATOR);
                     else if(rs.getInt(9) == 2) u.setType(TypeOfUser.USER);
-                    else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);
+                    else if(rs.getInt(9) == 3) u.setType(TypeOfUser.GUEST);*/
 
                     users.add(u);
                 }
@@ -959,4 +992,41 @@ public class BuildingManagementDAO {
             }
 
         }
+
+    public ArrayList<Jobs> getAllJobsForBuilding(Building building){
+        try {
+            getAllJobsForBuilding.setInt(1,building.getId());
+            ResultSet rs=getAllJobsForBuilding.executeQuery();
+            ArrayList<Jobs> jobs = new ArrayList<>();
+            while(rs.next()){
+                getJob.setInt(1,rs.getInt(1));
+                ResultSet rs2 = getJob.executeQuery();
+                Jobs j = new Jobs(rs2.getInt(1),rs2.getString(2), LocalDate.parse(rs2.getString(3)),null,rs2.getString(5));
+                String vrijemeKraja = rs2.getString(4);
+                if(vrijemeKraja.length() != 0 ) {
+                    j.setEndDate(LocalDate.parse(rs2.getString(4)));
+                }
+                jobs.add(j);
+            }
+            return jobs;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public void updateJob(Jobs jobs){
+        try {
+            updateJob.setString(1, jobs.getEndDate().toString());
+            updateJob.setInt(2, jobs.getId());
+
+            updateJob.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
